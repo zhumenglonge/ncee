@@ -1,0 +1,172 @@
+@import 'tailwindcss';
+
+/* 深浅色由 <html data-theme> 驱动，而不是 prefers-color-scheme */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ---------------------------------------------------------------
+   设计令牌：一套变量，两套取值，所有工具类都从这里取色
+   --------------------------------------------------------------- */
+:root {
+  --ink: #1b1a17;
+  --ink2: #4a4740;
+  --ink3: #7c766b;
+  --paper: #faf8f4;
+  --card: #ffffff;
+  --card2: #f4f0e8;
+  --line: #e7e1d6;
+  --line2: #f0ebe2;
+  --red: #c6352b;
+  --red-soft: #fbedea;
+  --jade: #1f6f63;
+  --jade-soft: #e7f2ef;
+  --gold: #a97c22;
+  --gold-soft: #fbf3e2;
+  /* 主色按钮上的文字色：深色主题的红变浅了，白字对比度不够 */
+  --on-red: #ffffff;
+  --shadow: 0 1px 2px rgba(27, 26, 23, 0.05), 0 10px 28px -18px rgba(27, 26, 23, 0.35);
+}
+
+[data-theme='dark'] {
+  --ink: #f2ede4;
+  --ink2: #c9c3b7;
+  --ink3: #969084;
+  --paper: #15140f;
+  --card: #1e1c17;
+  --card2: #26231c;
+  --line: #33302a;
+  --line2: #2a2721;
+  --red: #f0796b;
+  --red-soft: #3a2320;
+  --jade: #6fc9b4;
+  --jade-soft: #1d2e2a;
+  --gold: #e0b765;
+  --gold-soft: #332a18;
+  --on-red: #2a1512;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 30px -20px rgba(0, 0, 0, 0.9);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink2);
+  --color-ink3: var(--ink3);
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-card2: var(--card2);
+  --color-line: var(--line);
+  --color-line2: var(--line2);
+  --color-red: var(--red);
+  --color-red-soft: var(--red-soft);
+  --color-jade: var(--jade);
+  --color-jade-soft: var(--jade-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-on-red: var(--on-red);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    sans-serif;
+  --font-serif: 'Songti SC', 'Noto Serif SC', serif;
+
+  --radius-card: 16px;
+  --radius-soft: 10px;
+  --shadow-card: var(--shadow);
+
+  --animate-fade-in: fade 0.35s ease;
+  --animate-pop: pop 0.25s ease;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 环形进度条要动画自定义属性，先注册才能过渡 */
+@property --p {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@layer base {
+  html,
+  body {
+    margin: 0;
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.65;
+    background-image: radial-gradient(var(--line2) 1px, transparent 1px);
+    background-size: 22px 22px;
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0;
+    line-height: 1.35;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    border: 0;
+    background: none;
+  }
+
+  ::selection {
+    background: var(--red);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* conic-gradient 环形图，工具类表达不了 */
+  .ring {
+    --p: 0;
+    position: relative;
+    width: 132px;
+    height: 132px;
+    border-radius: 50%;
+    background: conic-gradient(var(--red) calc(var(--p) * 1%), var(--line) 0);
+    transition: --p 0.6s;
+  }
+
+  .ring::after {
+    content: '';
+    position: absolute;
+    inset: 11px;
+    border-radius: 50%;
+    background: var(--card);
+  }
+}
