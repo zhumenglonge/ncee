@@ -13,6 +13,12 @@ export interface AnswerRecord {
   at: number;
 }
 
+/** 两个志愿：第一志愿、第二志愿各 1 所院校，存的是院校 id */
+export interface VolunteerSlots {
+  first: string | null;
+  second: string | null;
+}
+
 export interface AppState {
   /** 收藏的院校 id */
   fav: string[];
@@ -24,9 +30,13 @@ export interface AppState {
   stats: { answered: number; correct: number };
   /** 打卡：{ '2026-10-30': [true, false, false, false] } */
   tasks: Record<string, boolean[]>;
+  /** 自己填的两个志愿 */
+  plan: VolunteerSlots;
 }
 
 const PREFIX = 'hndz27:';
+
+const EMPTY_PLAN: VolunteerSlots = { first: null, second: null };
 
 const EMPTY_STATE: AppState = {
   fav: [],
@@ -34,6 +44,7 @@ const EMPTY_STATE: AppState = {
   done: {},
   stats: { answered: 0, correct: 0 },
   tasks: {},
+  plan: EMPTY_PLAN,
 };
 
 /** 服务端快照必须是稳定引用，否则 useSyncExternalStore 会死循环 */
@@ -67,6 +78,8 @@ function getSnapshot(): AppState {
       done: read('done', {}),
       stats: read('stats', { answered: 0, correct: 0 }),
       tasks: read('tasks', {}),
+      // 旧版本没有 plan，读不到就回落到空志愿
+      plan: read('plan', EMPTY_PLAN),
     };
   }
   return cache;
@@ -166,5 +179,17 @@ export const actions = {
     const list = state.tasks[day] ?? Array<boolean>(total).fill(false);
     const next = list.map((v, i) => (i === index ? !v : v));
     commit({ tasks: { ...state.tasks, [day]: next } }, ['tasks']);
+  },
+
+  /**
+   * 设置某一志愿的院校（id 传 null 表示清空）。
+   * 两所院校报同一所是无效志愿，所以选到对方已占用的学校时直接互换。
+   */
+  setPlan(slot: keyof VolunteerSlots, id: string | null) {
+    const plan = getSnapshot().plan;
+    const other = slot === 'first' ? 'second' : 'first';
+    const next: VolunteerSlots = { ...plan, [slot]: id };
+    if (id && plan[other] === id) next[other] = plan[slot];
+    commit({ plan: next }, ['plan']);
   },
 };

@@ -25,7 +25,7 @@ export function FaqAccordion() {
             <p
               className={cn(
                 'overflow-hidden text-[13px] text-ink3 transition-all duration-200',
-                expanded ? 'mt-2 max-h-60' : 'max-h-0',
+                expanded ? 'mt-2 max-h-[520px]' : 'max-h-0',
               )}
             >
               {faq.a}

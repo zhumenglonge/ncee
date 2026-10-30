@@ -88,6 +88,14 @@ export default async function SchoolDetailPage({ params }: Params) {
 
         <div className="flex flex-wrap gap-2.5 pt-1">
           <FavoriteButton id={school.id} />
+          <a
+            href={school.site}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 rounded-[11px] border border-line bg-card px-4 py-2.5 text-[13.5px] font-semibold transition hover:border-ink3"
+          >
+            学校官网 ↗
+          </a>
           <Link
             href="/schools/"
             className="inline-flex items-center rounded-[11px] border border-line bg-card px-4 py-2.5 text-[13.5px] font-semibold transition hover:border-ink3"

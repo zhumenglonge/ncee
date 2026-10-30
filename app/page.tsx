@@ -1,11 +1,10 @@
 import { Card } from '@/components/ui';
-import { CountdownGrid } from '@/components/Countdown';
-import { FeaturedSchools, ProgressCard, StatsRow, TodayTasks } from '@/components/OverviewWidgets';
-import { getFeaturedSchools } from '@/data/schools';
+import { MottoLine } from '@/components/MottoLine';
+import { VolunteerPlan } from '@/components/VolunteerPlan';
+import { ExamFlowTable } from '@/components/ExamFlowTable';
+import { ProgressCard } from '@/components/OverviewWidgets';
 
 export default function OverviewPage() {
-  const featured = getFeaturedSchools();
-
   return (
     <div className="animate-fade-in">
       <div className="mb-4 grid grid-cols-[1.55fr_0.9fr] gap-4 max-[900px]:grid-cols-1">
@@ -15,23 +14,13 @@ export default function OverviewPage() {
           <h1 className="my-2 mb-1 font-serif text-[30px] tracking-[-0.5px] max-[640px]:text-2xl">
             把 <em className="text-red not-italic">3 月</em> 的考场，变成你的主场
           </h1>
-          <p className="max-w-[44ch] text-[13.5px] text-ink3">
-            院校信息、历年节奏、文化素质 + 职业技能双线刷题，一站式陪你把备考走完。
-          </p>
-          <CountdownGrid />
-          <p className="mt-3 text-xs text-ink3">
-            倒计时目标：2027 年单招校考预计时间（3 月中下旬）。实际以省教育考试院公告为准。
-          </p>
+          <MottoLine />
+          <VolunteerPlan />
         </Card>
         <ProgressCard />
       </div>
 
-      <StatsRow />
-
-      <div className="grid grid-cols-[1.35fr_1fr] items-start gap-3.5 max-[900px]:grid-cols-1">
-        <TodayTasks />
-        <FeaturedSchools schools={featured} />
-      </div>
+      <ExamFlowTable />
     </div>
   );
 }

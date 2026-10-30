@@ -1,7 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { EXAM_DATE } from '@/data/site';
+import { cn } from '@/lib/cn';
+import { ExamCalendar } from '@/components/ExamCalendar';
 
 interface Left {
   d: number;
@@ -36,37 +38,67 @@ export function useCountdown(target: Date = EXAM_DATE): Left | null {
   return left;
 }
 
-/** 顶栏的小胶囊：距考试 N 天 */
+/** 顶栏的小胶囊：距考试 N 天，点开看考试日历 */
 export function CountdownPill() {
   const left = useCountdown();
-  return (
-    <div className="rounded-full border border-line bg-card px-3 py-1.5 text-xs whitespace-nowrap text-ink2 max-[640px]:hidden">
-      距考试 <b className="text-red tabular-nums">{left ? left.d : '—'}</b> 天
-    </div>
-  );
-}
+  const [open, setOpen] = useState(false);
+  const boxRef = useRef<HTMLDivElement>(null);
 
-/** 概览页的四格倒计时 */
-export function CountdownGrid() {
-  const left = useCountdown();
-  const cells = [
-    { v: left ? String(left.d) : '--', u: '天' },
-    { v: left?.h ?? '--', u: '时' },
-    { v: left?.m ?? '--', u: '分' },
-    { v: left?.s ?? '--', u: '秒' },
-  ];
+  /* 点胶囊外面或按 Esc 时收起日历 */
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: PointerEvent) => {
+      if (!boxRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('pointerdown', onDown);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
 
   return (
-    <div className="mt-5 flex flex-wrap gap-2.5 max-[480px]:grid max-[480px]:grid-cols-4 max-[480px]:gap-2">
-      {cells.map((c) => (
-        <div
-          key={c.u}
-          className="relative z-[1] min-w-[74px] rounded-xl border border-line2 bg-card2 px-3 py-2.5 text-center max-[480px]:min-w-0 max-[480px]:px-1 max-[480px]:py-[7px]"
+    <div ref={boxRef} className="relative max-[640px]:hidden">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        title="点开看考试日历"
+        className={cn(
+          'flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs whitespace-nowrap transition duration-150',
+          open
+            ? 'border-red/50 bg-red-soft text-red'
+            : 'border-line bg-card text-ink2 hover:border-ink3 hover:text-ink',
+        )}
+      >
+        距考试 <b className="tabular-nums">{left ? left.d : '—'}</b> 天
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          aria-hidden
         >
-          <b className="block text-2xl tracking-[-0.5px] tabular-nums max-[480px]:text-lg">{c.v}</b>
-          <span className="text-[11px] text-ink3">{c.u}</span>
+          <rect x="3" y="5" width="18" height="16" rx="3" />
+          <path d="M8 3v4M16 3v4M3 10h18" />
+        </svg>
+      </button>
+      {open && (
+        <div
+          role="dialog"
+          aria-label="考试日历"
+          className="absolute right-0 top-[calc(100%+8px)] z-50 animate-pop"
+        >
+          <ExamCalendar />
         </div>
-      ))}
+      )}
     </div>
   );
 }

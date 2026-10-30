@@ -1,28 +1,22 @@
 'use client';
 
-import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { CITIES, NATURES, SCHOOLS } from '@/data/schools';
+import { SCHOOLS, TIERS } from '@/data/schools';
 import type { School } from '@/lib/types';
-import { Card, Chip, Empty, Pill, Pills } from '@/components/ui';
+import { Card, Pill, Pills } from '@/components/ui';
 import { FavoriteIcon } from '@/components/FavoriteButton';
-
-const ALL = '全部';
-
-function matchNature(school: School, nature: string): boolean {
-  if (nature === ALL) return true;
-  // 职业本科是按办学层次筛，不是按公办 / 民办筛
-  if (nature === '职业本科') return school.level === '职业本科';
-  return school.nature === nature;
-}
 
 function SchoolCard({ school }: { school: School }) {
   return (
     <Card className="flex flex-col gap-2.5 p-4 transition duration-200 hover:-translate-y-[3px] hover:shadow-[0_18px_34px_-22px_rgba(27,26,23,.45)]">
       <div className="flex items-start justify-between gap-2">
-        <Link href={`/schools/${school.id}/`} className="hover:underline">
-          <h3 className="text-[15px] tracking-[-0.2px]">{school.name}</h3>
-        </Link>
+        {/* 标题直达学校官网（新窗口打开），站内详情走卡片下方入口 */}
+        <a href={school.site} target="_blank" rel="noopener noreferrer" className="hover:underline">
+          <h3 className="text-[15px] tracking-[-0.2px]">
+            {school.name}
+            <span className="ml-[3px] text-[11px] text-ink3">↗</span>
+          </h3>
+        </a>
         <FavoriteIcon id={school.id} />
       </div>
 
@@ -55,64 +49,31 @@ function SchoolCard({ school }: { school: School }) {
 }
 
 export function SchoolBrowser() {
-  const [city, setCity] = useState<string>(ALL);
-  const [nature, setNature] = useState<string>(ALL);
-  const [keyword, setKeyword] = useState('');
-
-  const list = useMemo(() => {
-    const kw = keyword.trim();
-    return SCHOOLS.filter((school) => {
-      if (city !== ALL && school.city !== city) return false;
-      if (!matchNature(school, nature)) return false;
-      if (kw && !(school.name + school.hot.join('') + school.tags.join('')).includes(kw)) return false;
-      return true;
-    });
-  }, [city, nature, keyword]);
+  // 按梯队分块展示
+  const groups = TIERS.map((tier) => ({
+    ...tier,
+    schools: SCHOOLS.filter((school) => school.tier === tier.key),
+  })).filter((group) => group.schools.length > 0);
 
   return (
-    <>
-      <Card className="mb-3.5 grid gap-[11px] px-[18px] py-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <label className="flex min-w-[180px] flex-1 items-center gap-2 rounded-[11px] border border-line bg-card2 px-[13px] py-[9px]">
-            <span className="text-ink3">🔍</span>
-            <input
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
-              placeholder="搜索学校名称或专业，如「铁道」「护理」"
-              className="w-full border-0 bg-transparent text-[13.5px] outline-none placeholder:text-ink3"
-            />
-          </label>
-          <span className="text-xs text-ink3">{list.length} 所院校</span>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="w-[34px] shrink-0 text-xs text-ink3 max-[640px]:w-auto">城市</span>
-          {CITIES.map((item) => (
-            <Chip key={item} active={city === item} onClick={() => setCity(item)}>
-              {item}
-            </Chip>
-          ))}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="w-[34px] shrink-0 text-xs text-ink3 max-[640px]:w-auto">性质</span>
-          {NATURES.map((item) => (
-            <Chip key={item} active={nature === item} onClick={() => setNature(item)}>
-              {item}
-            </Chip>
-          ))}
-        </div>
-      </Card>
-
-      {list.length ? (
-        <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fill,minmax(288px,1fr))] max-[640px]:grid-cols-1">
-          {list.map((school) => (
-            <SchoolCard key={school.id} school={school} />
-          ))}
-        </div>
-      ) : (
-        <Empty>没有匹配的院校，换个关键词或筛选条件试试</Empty>
-      )}
-    </>
+    <div className="grid gap-6">
+      {groups.map((group) => (
+        <section key={group.key}>
+          <div className="mb-2.5 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+            <h3 className="flex items-center gap-2 text-[15px] font-bold tracking-[-0.2px]">
+              <span aria-hidden className="h-[14px] w-[3px] rounded-full bg-red" />
+              {group.title}
+            </h3>
+            <span className="text-[11.5px] text-ink3">{group.schools.length} 所</span>
+            <p className="w-full text-[12px] text-ink3">{group.desc}</p>
+          </div>
+          <div className="grid gap-3.5 [grid-template-columns:repeat(auto-fill,minmax(288px,1fr))] max-[640px]:grid-cols-1">
+            {group.schools.map((school) => (
+              <SchoolCard key={school.id} school={school} />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
   );
 }
