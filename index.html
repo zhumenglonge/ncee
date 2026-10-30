@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>湘单招 2027 · 湖南高职单招备考站</title>
+<style>
+  :root{
+    --ink:#1B1A17; --ink2:#4A4740; --ink3:#7C766B;
+    --paper:#FAF8F4; --card:#FFFFFF; --card2:#F4F0E8;
+    --line:#E7E1D6; --line2:#F0EBE2;
+    --red:#C6352B; --red-soft:#FBEDEA;
+    --jade:#1F6F63; --jade-soft:#E7F2EF;
+    --gold:#A97C22; --gold-soft:#FBF3E2;
+    --shadow:0 1px 2px rgba(27,26,23,.05), 0 10px 28px -18px rgba(27,26,23,.35);
+    --r:16px; --r-sm:10px;
+  }
+  [data-theme="dark"]{
+    --ink:#F2EDE4; --ink2:#C9C3B7; --ink3:#969084;
+    --paper:#15140F; --card:#1E1C17; --card2:#26231C;
+    --line:#33302A; --line2:#2A2721;
+    --red:#F0796B; --red-soft:#3A2320;
+    --jade:#6FC9B4; --jade-soft:#1D2E2A;
+    --gold:#E0B765; --gold-soft:#332A18;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 30px -20px rgba(0,0,0,.9);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:15px; line-height:1.65;
+    background-image:radial-gradient(var(--line2) 1px, transparent 1px);
+    background-size:22px 22px;
+    transition:background-color .3s, color .3s;
+  }
+  h1,h2,h3,h4{margin:0; line-height:1.35; font-weight:700}
+  p{margin:0}
+  button{font:inherit; color:inherit; cursor:pointer; border:0; background:none}
+  ::selection{background:var(--red); color:#fff}
+
+  /* ---------- topbar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:40;
+    background:color-mix(in srgb, var(--paper) 82%, transparent);
+    backdrop-filter:blur(14px) saturate(1.2);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-in{
+    max-width:1180px; margin:0 auto; padding:10px 20px;
+    display:flex; align-items:center; gap:18px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; flex-shrink:0}
+  .mark{
+    width:40px; height:40px; border-radius:12px; flex-shrink:0;
+    background:linear-gradient(150deg, var(--red), #8E1F19);
+    color:#fff; display:grid; place-items:center;
+    font-family:"Songti SC","Noto Serif SC",serif; font-size:21px; font-weight:700;
+    box-shadow:0 6px 16px -8px var(--red);
+  }
+  .brand-t{font-size:15px; font-weight:800; letter-spacing:.5px}
+  .brand-t span{color:var(--red)}
+  .brand-s{font-size:11px; color:var(--ink3); letter-spacing:.5px}
+  .tabs{display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; flex:1 1 auto; min-width:0}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{
+    padding:8px 13px; border-radius:99px; font-size:14px; color:var(--ink2);
+    white-space:nowrap; display:flex; align-items:center; gap:6px; transition:.18s;
+  }
+  .tab:hover{background:var(--card2); color:var(--ink)}
+  .tab.active{background:var(--ink); color:var(--paper); font-weight:600}
+  .badge{
+    min-width:18px; height:18px; padding:0 5px; border-radius:9px;
+    background:var(--red); color:#fff; font-size:11px; line-height:18px;
+    text-align:center; font-weight:700;
+  }
+  .tab.active .badge{background:var(--red)}
+  .topbar-right{display:flex; align-items:center; gap:8px; flex-shrink:0}
+  .cd-pill{
+    font-size:12px; color:var(--ink2); background:var(--card);
+    border:1px solid var(--line); border-radius:99px; padding:6px 12px;
+    white-space:nowrap;
+  }
+  .cd-pill b{color:var(--red); font-variant-numeric:tabular-nums}
+  .icon-btn{
+    width:34px; height:34px; border-radius:10px; border:1px solid var(--line);
+    background:var(--card); display:grid; place-items:center; font-size:15px;
+  }
+  .icon-btn:hover{border-color:var(--ink3)}
+
+  /* ---------- layout ---------- */
+  .shell{max-width:1180px; margin:0 auto; padding:26px 20px 90px}
+  .view{display:none; animation:fade .35s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+  .view-head{margin-bottom:18px}
+  .view-head h2{font-size:24px; letter-spacing:-.3px}
+  .view-head p{color:var(--ink3); font-size:13.5px; margin-top:5px}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--r); box-shadow:var(--shadow)}
+  .grid{display:grid; gap:14px; min-width:0}
+  .grid > *, .hero > *{min-width:0}
+
+  /* ---------- hero ---------- */
+  .hero{
+    display:grid; grid-template-columns:1.55fr .9fr; gap:16px; margin-bottom:16px;
+  }
+  .hero-main{
+    position:relative; overflow:hidden; padding:26px 28px;
+    background:
+      radial-gradient(120% 140% at 100% 0%, var(--red-soft) 0%, transparent 55%),
+      var(--card);
+  }
+  .hero-main::after{
+    content:""; position:absolute; right:-40px; bottom:-70px; width:230px; height:230px;
+    border-radius:50%; border:1px solid var(--line); opacity:.9;
+  }
+  .eyebrow{font-size:12px; letter-spacing:2px; color:var(--red); font-weight:700}
+  .hero-main h1{
+    font-family:"Songti SC","Noto Serif SC",serif;
+    font-size:30px; margin:8px 0 4px; letter-spacing:-.5px;
+  }
+  .hero-main h1 em{font-style:normal; color:var(--red)}
+  .hero-sub{color:var(--ink3); font-size:13.5px; max-width:44ch}
+  .cd-grid{display:flex; gap:10px; margin-top:20px; flex-wrap:wrap}
+  .cd-cell{
+    min-width:74px; padding:9px 12px; border-radius:12px; background:var(--card2);
+    border:1px solid var(--line2); text-align:center; position:relative; z-index:1;
+  }
+  .cd-cell b{display:block; font-size:24px; font-variant-numeric:tabular-nums; letter-spacing:-.5px}
+  .cd-cell span{font-size:11px; color:var(--ink3)}
+  .hero-side{padding:22px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px}
+  .ring{
+    --p:0; width:132px; height:132px; border-radius:50%; position:relative;
+    background:conic-gradient(var(--red) calc(var(--p)*1%), var(--line) 0);
+    transition:--p .6s;
+  }
+  .ring::after{
+    content:""; position:absolute; inset:11px; border-radius:50%; background:var(--card);
+  }
+  .ring-txt{position:absolute; inset:0; display:grid; place-items:center; z-index:1; text-align:center}
+  .ring-txt b{font-size:26px; display:block; line-height:1.1}
+  .ring-txt span{font-size:11px; color:var(--ink3)}
+  .hero-side p{font-size:12.5px; color:var(--ink3); text-align:center}
+
+  /* ---------- stats ---------- */
+  .stats{grid-template-columns:repeat(4,1fr); margin-bottom:16px}
+  .stat{padding:16px 18px}
+  .stat span{font-size:12px; color:var(--ink3)}
+  .stat b{display:block; font-size:26px; letter-spacing:-.5px; font-variant-numeric:tabular-nums}
+  .stat b small{font-size:12px; font-weight:500; color:var(--ink3); margin-left:3px}
+
+  /* ---------- tasks / panels ---------- */
+  .col2{grid-template-columns:1.35fr 1fr; align-items:start}
+  .panel{padding:20px}
+  .panel-h{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px}
+  .panel-h h3{font-size:15px}
+  .panel-h .hint{font-size:12px; color:var(--ink3)}
+  .task{
+    display:flex; align-items:flex-start; gap:11px; padding:11px 0;
+    border-top:1px dashed var(--line); cursor:pointer;
+  }
+  .task:first-child{border-top:0}
+  .box{
+    width:19px; height:19px; border-radius:6px; border:1.5px solid var(--line);
+    flex-shrink:0; margin-top:3px; display:grid; place-items:center; font-size:11px;
+    color:transparent; transition:.18s;
+  }
+  .task.done .box{background:var(--jade); border-color:var(--jade); color:#fff}
+  .task-main b{font-size:14px; font-weight:600}
+  .task.done .task-main b{color:var(--ink3); text-decoration:line-through}
+  .task-main span{display:block; font-size:12px; color:var(--ink3)}
+  .mini-school{
+    display:flex; gap:11px; padding:10px; border-radius:12px; align-items:center;
+    transition:.18s; cursor:pointer; width:100%; text-align:left;
+  }
+  .mini-school:hover{background:var(--card2)}
+  .mini-logo{
+    width:38px; height:38px; border-radius:11px; flex-shrink:0; display:grid; place-items:center;
+    background:var(--jade-soft); color:var(--jade); font-weight:800; font-size:14px;
+  }
+  .mini-school b{font-size:13.5px; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:19ch}
+  .mini-school span{font-size:11.5px; color:var(--ink3)}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    padding:9px 16px; border-radius:11px; font-size:13.5px; font-weight:600;
+    border:1px solid var(--line); background:var(--card); transition:.18s; white-space:nowrap;
+  }
+  .btn:hover{border-color:var(--ink3); transform:translateY(-1px)}
+  .btn.primary{background:var(--red); border-color:var(--red); color:#fff; box-shadow:0 8px 20px -12px var(--red)}
+  .btn.primary:hover{filter:brightness(1.06)}
+  .btn.ink{background:var(--ink); border-color:var(--ink); color:var(--paper)}
+  .btn.sm{padding:6px 12px; font-size:12.5px; border-radius:9px}
+  .btn:disabled{opacity:.45; cursor:not-allowed; transform:none}
+
+  /* ---------- filters ---------- */
+  .filterbar{padding:16px 18px; margin-bottom:14px; display:grid; gap:11px}
+  .frow{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+  .frow .lbl{font-size:12px; color:var(--ink3); width:34px; flex-shrink:0}
+  .chip{
+    padding:5px 12px; border-radius:99px; font-size:12.5px; color:var(--ink2);
+    border:1px solid var(--line); background:var(--card); transition:.16s;
+  }
+  .chip:hover{border-color:var(--ink3)}
+  .chip.on{background:var(--ink); color:var(--paper); border-color:var(--ink); font-weight:600}
+  .search{
+    display:flex; align-items:center; gap:8px; padding:9px 13px; border-radius:11px;
+    border:1px solid var(--line); background:var(--card2); flex:1; min-width:180px;
+  }
+  .search input{border:0; background:none; outline:none; font:inherit; color:inherit; width:100%; font-size:13.5px}
+  .search input::placeholder{color:var(--ink3)}
+
+  /* ---------- school cards ---------- */
+  .schools{grid-template-columns:repeat(auto-fill, minmax(288px,1fr))}
+  .scard{padding:16px; display:flex; flex-direction:column; gap:9px; transition:.2s}
+  .scard:hover{transform:translateY(-3px); box-shadow:0 18px 34px -22px rgba(27,26,23,.45)}
+  .stitle{display:flex; justify-content:space-between; align-items:flex-start; gap:8px}
+  .stitle h3{font-size:15px; letter-spacing:-.2px}
+  .fav{font-size:15px; color:var(--ink3); line-height:1; padding:2px 4px; border-radius:6px}
+  .fav.on{color:var(--gold)}
+  .pills{display:flex; gap:5px; flex-wrap:wrap}
+  .pill{
+    font-size:11px; padding:2px 8px; border-radius:6px; background:var(--card2);
+    color:var(--ink2); border:1px solid var(--line2);
+  }
+  .pill.red{background:var(--red-soft); color:var(--red); border-color:transparent}
+  .pill.jade{background:var(--jade-soft); color:var(--jade); border-color:transparent}
+  .pill.gold{background:var(--gold-soft); color:var(--gold); border-color:transparent}
+  .scard p{font-size:12.8px; color:var(--ink3); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; min-height:3.9em}
+  .sfoot{display:flex; justify-content:space-between; align-items:center; padding-top:4px; margin-top:auto}
+  .sfoot span{font-size:11.5px; color:var(--ink3)}
+  .empty{padding:50px 20px; text-align:center; color:var(--ink3); font-size:13.5px}
+
+  /* ---------- drill ---------- */
+  .drill-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px}
+  .prog{height:6px; border-radius:99px; background:var(--line); overflow:hidden; margin-top:12px}
+  .prog i{display:block; height:100%; background:linear-gradient(90deg, var(--red), #E88A5C); border-radius:99px; transition:width .3s}
+  .qcard{padding:24px 26px}
+  .qmeta{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink3); margin-bottom:12px; flex-wrap:wrap}
+  .qtext{font-size:17px; font-weight:600; line-height:1.6; margin-bottom:18px; letter-spacing:-.2px}
+  .opts{display:grid; gap:9px}
+  .opt{
+    display:flex; align-items:flex-start; gap:11px; padding:12px 15px; border-radius:12px;
+    border:1px solid var(--line); background:var(--card); text-align:left; transition:.16s; font-size:14.5px;
+  }
+  .opt:hover:not(:disabled){border-color:var(--ink3); transform:translateX(2px)}
+  .opt .key{
+    width:22px; height:22px; border-radius:7px; flex-shrink:0; display:grid; place-items:center;
+    background:var(--card2); font-size:12px; font-weight:700; color:var(--ink2);
+  }
+  .opt.right{border-color:var(--jade); background:var(--jade-soft)}
+  .opt.right .key{background:var(--jade); color:#fff}
+  .opt.wrong{border-color:var(--red); background:var(--red-soft)}
+  .opt.wrong .key{background:var(--red); color:#fff}
+  .opt:disabled{cursor:default}
+  .exp{
+    margin-top:16px; padding:14px 16px; border-radius:12px; font-size:13.5px;
+    background:var(--card2); border-left:3px solid var(--jade); animation:fade .3s;
+  }
+  .exp b{display:block; font-size:12px; letter-spacing:1px; color:var(--jade); margin-bottom:4px}
+  .qfoot{display:flex; justify-content:space-between; align-items:center; margin-top:18px; gap:10px; flex-wrap:wrap}
+  .result{padding:34px 26px; text-align:center}
+  .result .big{font-size:52px; font-weight:800; letter-spacing:-2px; line-height:1}
+  .result .big small{font-size:18px}
+  .result p{color:var(--ink3); font-size:13.5px; margin-top:6px}
+  .result .row{display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap}
+
+  /* ---------- wrongbook ---------- */
+  .wq{padding:16px 18px; display:grid; gap:8px}
+  .wq .qtext{font-size:14.5px; margin:0}
+  .wq .rt{font-size:12.5px; color:var(--ink3)}
+  .wq .rt b{color:var(--jade); font-weight:600}
+
+  /* ---------- guide ---------- */
+  .tl{position:relative; padding-left:26px}
+  .tl::before{content:""; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:var(--line)}
+  .tl-item{position:relative; padding:0 0 20px}
+  .tl-item::before{
+    content:""; position:absolute; left:-25px; top:6px; width:10px; height:10px; border-radius:50%;
+    background:var(--card); border:2px solid var(--red);
+  }
+  .tl-item h4{font-size:14px}
+  .tl-item span{font-size:12px; color:var(--red); font-weight:600; letter-spacing:.5px}
+  .tl-item p{font-size:13px; color:var(--ink3); margin-top:3px}
+  .acc{border-top:1px solid var(--line); padding:13px 0; cursor:pointer}
+  .acc:first-child{border-top:0}
+  .acc h4{font-size:14px; display:flex; justify-content:space-between; gap:10px}
+  .acc h4 i{font-style:normal; color:var(--ink3); transition:.2s}
+  .acc.open h4 i{transform:rotate(45deg)}
+  .acc p{font-size:13px; color:var(--ink3); max-height:0; overflow:hidden; transition:.25s}
+  .acc.open p{max-height:240px; margin-top:8px}
+  .note{font-size:12px; color:var(--ink3); padding:12px 16px; border-radius:12px; background:var(--gold-soft); border:1px solid transparent}
+
+  /* ---------- modal ---------- */
+  .modal-bd{
+    position:fixed; inset:0; z-index:60; background:rgba(20,18,14,.5);
+    backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; padding:20px;
+  }
+  .modal-bd.on{display:flex}
+  .modal{
+    width:100%; max-width:640px; max-height:86vh; overflow:auto; background:var(--card);
+    border-radius:20px; border:1px solid var(--line); animation:pop .25s ease;
+  }
+  @keyframes pop{from{opacity:0; transform:scale(.96) translateY(10px)} to{opacity:1; transform:none}}
+  .modal-h{padding:22px 24px 16px; border-bottom:1px solid var(--line); position:relative}
+  .modal-h h3{font-size:19px; padding-right:34px; letter-spacing:-.3px}
+  .modal-h .pills{margin-top:9px}
+  .close{position:absolute; right:16px; top:16px; width:30px; height:30px; border-radius:9px; font-size:16px; color:var(--ink3); background:var(--card2)}
+  .mtabs{display:flex; gap:6px; padding:14px 24px 0}
+  .mtab{padding:6px 12px; border-radius:9px; font-size:13px; color:var(--ink2)}
+  .mtab.on{background:var(--ink); color:var(--paper); font-weight:600}
+  .mbody{padding:16px 24px 24px; font-size:13.8px; color:var(--ink2)}
+  .mbody h5{font-size:12px; letter-spacing:1.5px; color:var(--red); margin:0 0 6px}
+  .mbody p{margin-bottom:16px}
+  .mbody ul{margin:0 0 16px; padding-left:18px; color:var(--ink2)}
+  .mbody li{margin-bottom:4px}
+  .kv{display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:13.2px; margin-bottom:14px}
+  .kv b{color:var(--ink3); font-weight:500; white-space:nowrap}
+
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr}
+    .hero-side{flex-direction:row; justify-content:space-around}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .col2{grid-template-columns:1fr}
+  }
+  @media (max-width:480px){
+    .brand > div:last-child{display:none}
+    .cd-grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:8px}
+    .cd-cell{min-width:0; padding:7px 4px}
+    .cd-cell b{font-size:18px}
+    .hero-side{gap:8px; padding:18px 14px}
+    .ring{width:96px; height:96px}
+    .ring-txt b{font-size:20px}
+    .hero-side p{font-size:11.5px}
+    .tab{padding:8px 10px; font-size:13.5px}
+    .kv{grid-template-columns:1fr; gap:2px}
+    .kv b{margin-top:6px}
+  }
+  @media (max-width:640px){
+    .shell{padding:18px 14px 90px}
+    .topbar-in{padding:8px 12px; gap:10px}
+    .brand-s{display:none}
+    .cd-pill{display:none}
+    .hero-main{padding:22px 20px}
+    .hero-main h1{font-size:24px}
+    .cd-cell{min-width:64px; padding:7px 9px}
+    .cd-cell b{font-size:20px}
+    .qcard{padding:18px 16px}
+    .schooels{grid-template-columns:1fr}
+    .frow .lbl{width:auto}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="mark">湘</div>
+      <div>
+        <div class="brand-t">湘单招 <span>2027</span></div>
+        <div class="brand-s">湖南高职单招备考站</div>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-view="overview">概览</button>
+      <button class="tab" data-view="schools">院校库</button>
+      <button class="tab" data-view="drill">刷题</button>
+      <button class="tab" data-view="wrong">错题本 <span class="badge" id="wrongBadge">0</span></button>
+      <button class="tab" data-view="guide">备考指南</button>
+    </nav>
+    <div class="topbar-right">
+      <div class="cd-pill" id="cdPill">距考试 <b>—</b> 天</div>
+      <button class="icon-btn" id="themeBtn" title="切换深浅色">◐</button>
+    </div>
+  </div>
+</header>
+
+<main class="shell">
+
+  <!-- ================= 概览 ================= -->
+  <section class="view active" id="view-overview">
+    <div class="hero">
+      <div class="card hero-main">
+        <div class="eyebrow">2027 湖南省高职单招</div>
+        <h1>把 <em>3 月</em> 的考场，变成你的主场</h1>
+        <p class="hero-sub">院校信息、历年节奏、文化素质 + 职业技能双线刷题，一站式陪你把备考走完。</p>
+        <div class="cd-grid">
+          <div class="cd-cell"><b id="cdD">--</b><span>天</span></div>
+          <div class="cd-cell"><b id="cdH">--</b><span>时</span></div>
+          <div class="cd-cell"><b id="cdM">--</b><span>分</span></div>
+          <div class="cd-cell"><b id="cdS">--</b><span>秒</span></div>
+        </div>
+        <p style="font-size:12px;color:var(--ink3);margin-top:12px">
+          倒计时目标：2027 年单招校考预计时间（3 月中下旬）。实际以省教育考试院公告为准。
+        </p>
+      </div>
+      <div class="card hero-side">
+        <div class="ring" id="ring">
+          <div class="ring-txt"><b id="ringPct">0%</b><span>题库完成度</span></div>
+        </div>
+        <p>已答 <b id="sideAnswered">0</b> / <b id="sideTotal">0</b> 题<br />保持每天 20 题，节奏就很稳</p>
+        <button class="btn primary" data-go="drill">继续刷题</button>
+      </div>
+    </div>
+
+    <div class="grid stats">
+      <div class="card stat"><span>题库总量</span><b id="stTotal">0<small>题</small></b></div>
+      <div class="card stat"><span>已作答</span><b id="stDone">0<small>题</small></b></div>
+      <div class="card stat"><span>正确率</span><b id="stRate">—</b></div>
+      <div class="card stat"><span>收藏院校</span><b id="stFav">0<small>所</small></b></div>
+    </div>
+
+    <div class="grid col2">
+      <div class="card panel">
+        <div class="panel-h">
+          <h3>今日任务</h3>
+          <span class="hint" id="todayTip">0 / 4 完成</span>
+        </div>
+        <div id="taskList"></div>
+      </div>
+      <div class="card panel">
+        <div class="panel-h">
+          <h3>值得一看的院校</h3>
+          <button class="btn sm" data-go="schools">全部</button>
+        </div>
+        <div id="miniSchools"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 院校库 ================= -->
+  <section class="view" id="view-schools">
+    <div class="view-head">
+      <h2>湖南单招院校库</h2>
+      <p>按城市、办学性质筛选，点开看简介、优势专业与单招参考信息。</p>
+    </div>
+    <div class="card filterbar">
+      <div class="frow">
+        <div class="search">
+          <span style="color:var(--ink3)">🔍</span>
+          <input id="kw" placeholder="搜索学校名称或专业，如「铁道」「护理」" />
+        </div>
+        <span class="hint" id="scCount" style="font-size:12px;color:var(--ink3)"></span>
+      </div>
+      <div class="frow"><span class="lbl">城市</span><div class="chips" id="cityChips" style="display:flex;gap:6px;flex-wrap:wrap"></div></div>
+      <div class="frow"><span class="lbl">性质</span><div class="chips" id="natureChips" style="display:flex;gap:6px;flex-wrap:wrap"></div></div>
+    </div>
+    <div class="grid schools" id="schoolGrid"></div>
+  </section>
+
+  <!-- ================= 刷题 ================= -->
+  <section class="view" id="view-drill">
+    <div class="view-head">
+      <h2>刷题</h2>
+      <p>语文 · 数学 · 英语 · 职业适应性测试。点选项即判分并出解析，答错自动进错题本。</p>
+    </div>
+    <div class="card filterbar">
+      <div class="frow">
+        <span class="lbl">科目</span>
+        <div class="chips" id="subjectChips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      </div>
+      <div class="frow">
+        <button class="btn ink" id="btnPractice">顺序练习</button>
+        <button class="btn" id="btnMock">随机 10 题模拟</button>
+        <button class="btn" id="btnWrongDrill">错题重做</button>
+      </div>
+    </div>
+    <div id="drillArea"></div>
+  </section>
+
+  <!-- ================= 错题本 ================= -->
+  <section class="view" id="view-wrong">
+    <div class="view-head">
+      <h2>错题本</h2>
+      <p>答错过的题会自动收进来，重做答对后可移出。</p>
+    </div>
+    <div class="drill-head">
+      <span style="font-size:13px;color:var(--ink3)" id="wrongCount">共 0 题</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn primary" id="btnRedoWrong">重做错题</button>
+        <button class="btn" id="btnClearWrong">清空</button>
+      </div>
+    </div>
+    <div class="grid" id="wrongList"></div>
+  </section>
+
+  <!-- ================= 备考指南 ================= -->
+  <section class="view" id="view-guide">
+    <div class="view-head">
+      <h2>备考指南</h2>
+      <p>单招怎么考、一年怎么排、常见疑问一次说清。</p>
+    </div>
+    <div class="grid col2">
+      <div class="card panel">
+        <div class="panel-h"><h3>一年备考节奏（参考）</h3></div>
+        <div class="tl">
+          <div class="tl-item">
+            <span>2026.09 — 2026.12</span>
+            <h4>打基础</h4>
+            <p>语数英按单招难度过一遍知识点，每天 20～30 题；英语重点补单词和基础语法。</p>
+          </div>
+          <div class="tl-item">
+            <span>2026.12 — 2027.02</span>
+            <h4>定院校、看简章</h4>
+            <p>锁定 2～3 所目标院校（冲 / 稳 / 保），逐条读招生简章：招生专业、计划数、考试科目、特殊要求（身高视力、体检、面试）。</p>
+          </div>
+          <div class="tl-item">
+            <span>2027.02 — 2027.03</span>
+            <h4>志愿填报 + 冲刺</h4>
+            <p>按省考试院通知完成报名与志愿填报；同时开始职业技能（适应性）测试的面试、实操准备。</p>
+          </div>
+          <div class="tl-item">
+            <span>2027.03</span>
+            <h4>校考</h4>
+            <p>文化素质测试 + 职业技能测试。考前一周按考试时段做整卷模拟，调作息。</p>
+          </div>
+          <div class="tl-item" style="padding-bottom:0">
+            <span>2027.04</span>
+            <h4>录取与确认</h4>
+            <p>查询录取结果、按学校要求确认。被单招录取后一般不再参加当年普通高考录取，务必以当年文件为准。</p>
+          </div>
+        </div>
+      </div>
+      <div class="card panel">
+        <div class="panel-h"><h3>常见问题</h3></div>
+        <div id="faq"></div>
+        <p class="note" style="margin-top:16px">
+          本站院校与考试信息为备考整理版本，仅作参考；招生专业、计划与录取规则请以湖南省教育考试院及各校当年官方招生简章为最终依据。
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="modal-bd" id="modal">
+  <div class="modal" id="modalBox"></div>
+</div>
+
+<script>
+/* =============================================================
+   数据层
+   ============================================================= */
+const SCHOOLS = [
+  {id:'cs-01', name:'长沙民政职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['双高计划','国家示范'], hot:['现代殡葬技术与管理','智慧健康养老服务与管理','社会工作','心理咨询'],
+   intro:'民政部与湖南省共建的国家示范性高职院校，全国民政社工类人才培养的标杆，实训条件与社会口碑在省内长期靠前。',
+   exam:'文化素质测试 + 职业技能测试；热门专业报考集中，部分专业有面试或体检要求。',
+   tip:'殡葬、养老、社工是其名片专业，属于“冷门里最稳”的就业方向；报考前建议实地看一眼实训基地。'},
+  {id:'zz-01', name:'湖南铁道职业技术学院', city:'株洲', nature:'公办', level:'高职专科', tags:['双高计划','轨道交通'], hot:['铁道机车运用与维护','城市轨道交通车辆技术','铁道供电技术'],
+   intro:'坐落株洲职教城，依托中车株机等企业办学，是轨道交通装备制造领域的老牌强校。',
+   exam:'文化素质测试 + 职业适应性/技能测试，专业方向与轨道交通工种强相关。',
+   tip:'株洲被誉为“中国电力机车之都”，对口就业单位集中，适合想进轨道交通系统的考生。'},
+  {id:'zz-02', name:'湖南铁路科技职业技术学院', city:'株洲', nature:'公办', level:'高职专科', tags:['轨道交通','订单班'], hot:['铁道交通运营管理','铁道机车','高速铁路客运服务'],
+   intro:'专注铁路运营与机车方向的高职院校，校企合作与订单班体系成熟。',
+   exam:'文化素质测试 + 面试/职业适应性测试，乘务类专业通常有身高、形体等基本条件要求。',
+   tip:'想走乘务、站务方向要提前确认自己是否符合外形与视力条件。'},
+  {id:'cs-02', name:'湖南工业职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['双高计划','国家示范'], hot:['数控技术','模具设计与制造','汽车检测与维修技术','工业机器人技术'],
+   intro:'湖南装备制造类高职的代表院校，机械与智能制造专业群实力突出，实训设备投入大。',
+   exam:'文化素质测试 + 职业技能测试（含实操倾向题目）。',
+   tip:'机械类、数控类适合动手能力强的考生，男生比例偏高，女生可关注工业设计、质检方向。'},
+  {id:'cs-03', name:'湖南交通职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['双高计划','交通运输'], hot:['道路与桥梁工程技术','汽车检测与维修技术','现代物流管理'],
+   intro:'湖南交通运输行业人才培养的主阵地，路桥、汽车、物流三大板块与行业企业绑定紧密。',
+   exam:'文化素质测试 + 职业技能测试，部分专业有面试。',
+   tip:'路桥专业常与国企施工单位对接，工作环境偏项目现场，报考前要有心理准备。'},
+  {id:'cs-04', name:'长沙航空职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['军队装备','航空维修'], hot:['飞机机电设备维修','无人机应用技术','航空发动机维修技术'],
+   intro:'隶属于空军装备部的航空类高职院校，航空维修实训资源独特，行业辨识度高。',
+   exam:'文化素质测试 + 职业适应性测试，报考通常需符合体检与政治考核要求（以简章为准）。',
+   tip:'航空维修对理科基础与身体条件都有要求，务必逐条对照简章里的体检标准。'},
+  {id:'cs-05', name:'湖南大众传媒职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['传媒艺术','播音主持'], hot:['播音与主持','影视编导','数字媒体艺术设计','新闻采编与制作'],
+   intro:'湖南广电生态圈里的传媒类高职，实践项目多，与省内媒体、MCN 机构合作频繁。',
+   exam:'文化素质测试 + 专业面试/才艺展示，艺术类专业通常有加试。',
+   tip:'面试是重头戏，准备 1 分钟自我介绍 + 一段即兴表达，比背稿更有效。'},
+  {id:'cs-06', name:'湖南信息职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['信息技术','软件'], hot:['软件技术','计算机网络技术','电子信息工程技术','大数据技术'],
+   intro:'以电子信息与软件技术为主干的高职院校，省内 IT 类单招的热门选择之一。',
+   exam:'文化素质测试 + 职业技能测试，机考类题目可能涉及基础逻辑与计算机常识。',
+   tip:'软件方向录取分相对更高，数学与逻辑题别丢分。'},
+  {id:'cs-07', name:'湖南安全技术职业学院', city:'长沙', nature:'公办', level:'高职专科', tags:['应急安全','特色'], hot:['安全技术与管理','应急救援技术','消防工程技术'],
+   intro:'国家安全生产培训基地，安全与应急类专业特色鲜明，行业需求稳定。',
+   exam:'文化素质测试 + 职业适应性测试，部分专业有体能或体检要求。',
+   tip:'应急救援类需要体能，男女不限但体测要过；安全技术方向就业面覆盖化工、建筑、矿山。'},
+  {id:'cs-08', name:'湖南水利水电职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['水利电力'], hot:['水利水电建筑工程','电力系统自动化技术','水生态修复技术'],
+   intro:'湖南水利行业的主力院校，与水利、电力系统单位保持长期合作。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'水利、电力方向偏工程现场，适合能接受出差与项目驻场的考生。'},
+  {id:'cs-09', name:'湖南商务职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['财经商贸'], hot:['大数据与会计','电子商务','现代物流管理','市场营销'],
+   intro:'财经商贸类高职院校，会计与电商专业办学历史长，专升本氛围较浓。',
+   exam:'文化素质测试 + 职业适应性测试（含沟通表达类面试）。',
+   tip:'会计专业对数学与细心度要求高；电商方向可以提前积累短视频、店铺运营的小作品。'},
+  {id:'cs-10', name:'长沙商贸旅游职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['餐旅','湘菜'], hot:['烹饪工艺与营养','酒店管理与数字化运营','旅游管理'],
+   intro:'湘菜与酒店管理人才培养的知名院校，实训厨房与酒店场景化教学是特色。',
+   exam:'文化素质测试 + 面试/实操（烹饪类常考基本功）。',
+   tip:'烹饪方向面试可能考刀工或基础操作，手上有点活儿更容易出彩。'},
+  {id:'cs-11', name:'湖南体育职业学院', city:'长沙', nature:'公办', level:'高职专科', tags:['体育','体测'], hot:['运动训练','体育运营与管理','社会体育'],
+   intro:'湖南体育类高职院校，与省体育系统联系紧密，竞技与健身指导方向并重。',
+   exam:'文化素质测试 + 体育专项测试，专项成绩权重较高。',
+   tip:'有长期训练基础的同学优势明显，提前确定专项并保持状态。'},
+  {id:'cs-12', name:'湖南司法警官职业学院', city:'长沙', nature:'公办', level:'高职专科', tags:['政法','体测政审'], hot:['刑事执行','司法警务','法律事务'],
+   intro:'湖南政法类高职院校，警务化管理，毕业生多进入司法行政、监狱戒毒等系统。',
+   exam:'文化素质测试 + 面试 + 体能测试 + 体检政审，流程最严格的一类。',
+   tip:'体测（跑步、引体/仰卧）要提前 3 个月练；政审材料别拖到最后办。'},
+  {id:'cs-13', name:'湖南外贸职业学院', city:'长沙', nature:'公办', level:'高职专科', tags:['外经贸','外语'], hot:['国际经济与贸易','跨境电子商务','商务英语'],
+   intro:'外经贸类高职院校，跨境电商与商务英语方向与省内园区企业合作较多。',
+   exam:'文化素质测试 + 面试（外语类可能含口语环节）。',
+   tip:'英语口语哪怕只会简单句也要敢说，这是面试的加分项。'},
+  {id:'cs-14', name:'湖南现代物流职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['物流'], hot:['现代物流管理','冷链物流技术与管理','供应链运营'],
+   intro:'以物流为主干专业的高职院校，与省内物流枢纽、快递企业合作紧密。',
+   exam:'文化素质测试 + 职业适应性测试。',
+   tip:'物流不等于送快递，仓储规划、供应链运营才是核心岗位。'},
+  {id:'cs-15', name:'湖南食品药品职业学院', city:'长沙', nature:'公办', level:'高职专科', tags:['医药','食品药品'], hot:['药学','中药学','食品检验检测技术'],
+   intro:'食品药品类专业院校，实验实训与省内医药企业、检测机构对接。',
+   exam:'文化素质测试 + 职业技能测试，部分专业有体检要求。',
+   tip:'药学方向对化学基础有要求，色弱色盲需提前确认限制。'},
+  {id:'cs-16', name:'湖南网络工程职业学院', city:'长沙', nature:'公办', level:'高职专科', tags:['信息技术'], hot:['软件技术','物联网应用技术','信息安全技术应用'],
+   intro:'信息技术类高职院校，与湖南开放大学同址办学，专业设置偏应用。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'适合想低成本进入 IT 行业、并计划专升本的同学。'},
+  {id:'cs-17', name:'长沙环境保护职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['环保'], hot:['环境工程技术','环境监测技术','生态环境修复技术'],
+   intro:'环保类高职院校，环境监测与治理方向在省内具有唯一性优势。',
+   exam:'文化素质测试 + 职业适应性测试。',
+   tip:'环保行业政策驱动明显，第三方检测机构是主要去向之一。'},
+  {id:'cs-18', name:'长沙南方职业学院', city:'长沙', nature:'民办', level:'高职专科', tags:['医护','航空服务'], hot:['护理','空中乘务','学前教育'],
+   intro:'民办高职院校，医护与航空服务类专业招生规模较大。',
+   exam:'文化素质测试 + 面试，民办院校录取分数相对宽松但学费较高。',
+   tip:'报考前算清三年总费用（学费 + 住宿 + 实训），别只看录取分。'},
+  {id:'cs-19', name:'湖南三一工业职业技术学院', city:'长沙', nature:'民办', level:'高职专科', tags:['装备制造','企业办学'], hot:['工程机械运用技术','智能焊接技术','工业机器人技术'],
+   intro:'三一集团举办的高职院校，工程机械方向实训与就业通道直接对接企业。',
+   exam:'文化素质测试 + 职业适应性测试。',
+   tip:'企业办学意味着实习机会多，也要接受较规范的一线岗位锻炼。'},
+  {id:'cs-20', name:'湖南外国语职业学院', city:'长沙', nature:'民办', level:'高职专科', tags:['外语'], hot:['商务英语','应用日语','跨境电子商务'],
+   intro:'民办外语类高职院校，小语种与跨境电商方向选择较多。',
+   exam:'文化素质测试 + 面试（含外语口语）。',
+   tip:'小语种从零起点教，但对记忆力和持续性要求高。'},
+  {id:'cs-21', name:'湖南艺术职业学院', city:'长沙', nature:'公办', level:'高职专科', tags:['艺术','艺考'], hot:['舞蹈表演','音乐表演','戏曲表演','艺术设计'],
+   intro:'湖南艺术类高职院校，舞台实践机会多，与省内文艺院团联系紧密。',
+   exam:'文化素质测试 + 专业加试（基本功、剧目、视唱等）。',
+   tip:'专业加试占比高，提前准备 2 个成型作品（一主一备）。'},
+  {id:'cs-22', name:'湖南大众传媒（影视制作方向）', city:'长沙', nature:'公办', level:'高职专科', tags:['影视','新媒体'], hot:['影视多媒体技术','摄影摄像技术','网络直播与运营'],
+   intro:'面向影视制作与新媒体运营的应用型专业集群，设备与项目资源充足。',
+   exam:'文化素质测试 + 作品/面试。',
+   tip:'有相机、剪辑作品或直播经验的同学，面试时直接带作品说话。'},
+  {id:'yy-01', name:'湖南工艺美术职业学院', city:'益阳', nature:'公办', level:'高职专科', tags:['双高计划','工艺美术'], hot:['湘绣设计与工艺','陶瓷设计与工艺','服装与服饰设计'],
+   intro:'以湘绣、陶瓷、服装为特色的工艺美术类高职，非遗传承教学是招牌。',
+   exam:'文化素质测试 + 专业加试（素描/色彩或手作）。',
+   tip:'有美术基础更稳，没有基础要提前 3 个月练素描几何体。'},
+  {id:'yy-02', name:'湖南石油化工职业技术学院', city:'岳阳', nature:'公办', level:'高职专科', tags:['石化'], hot:['石油化工技术','化工装备技术','应用化工技术'],
+   intro:'依托岳阳石化产业办学，化工类专业与大型炼化企业对接紧密。',
+   exam:'文化素质测试 + 职业适应性测试，部分专业有体检要求。',
+   tip:'化工岗位需要接受倒班与安全规范管理，薪资在专科里偏高。'},
+  {id:'yy-03', name:'岳阳职业技术学院', city:'岳阳', nature:'公办', level:'高职专科', tags:['医卫','综合'], hot:['护理','临床医学','港口物流管理'],
+   intro:'湘北地区综合实力较强的公办高职，医护与港口物流是两大特色。',
+   exam:'文化素质测试 + 职业技能测试，医护类有体检限制。',
+   tip:'护理专业实操占比高，静脉输液、无菌操作可以提前看视频熟悉流程。'},
+  {id:'yy-04', name:'湖南民族职业学院', city:'岳阳', nature:'公办', level:'高职专科', tags:['师范','民族'], hot:['学前教育','小学教育','民族传统技艺'],
+   intro:'兼有师范与民族特色的高职院校，学前教育办学规模较大。',
+   exam:'文化素质测试 + 面试（才艺展示：弹唱、舞蹈、讲故事）。',
+   tip:'学前教育面试几乎必考才艺，选一项练到能完整展示即可。'},
+  {id:'zz-03', name:'湖南中医药高等专科学校', city:'株洲', nature:'公办', level:'高职专科', tags:['中医药','医卫'], hot:['中医学','护理','中药学','针灸推拿'],
+   intro:'湖南中医药类高等专科学校，中医与护理专业办学历史悠久。',
+   exam:'文化素质测试 + 职业技能测试，医卫类专业通常有体检与色觉要求。',
+   tip:'中医方向要背的东西多，暑假就可以开始积累中药与经络基础。'},
+  {id:'zz-04', name:'湖南汽车工程职业大学', city:'株洲', nature:'公办', level:'职业本科', tags:['职业本科','汽车'], hot:['新能源汽车工程技术','汽车服务工程','智能网联汽车技术'],
+   intro:'由湖南汽车工程职业学院升格的职业本科院校，汽车全产业链专业布局完整。',
+   exam:'文化素质测试 + 职业技能测试；本科层次专业分数要求更高。',
+   tip:'职业本科毕业证为本科层次职业教育，报考前确认清楚学制与学位政策。'},
+  {id:'zz-05', name:'湖南化工职业技术学院', city:'株洲', nature:'公办', level:'高职专科', tags:['化工','双高计划'], hot:['应用化工技术','精细化工技术','药品生产技术'],
+   intro:'化工类高职强校，与省内化工园区企业合作深入。',
+   exam:'文化素质测试 + 职业适应性测试。',
+   tip:'化工、制药方向就业稳定，注意确认实训与岗位的安全防护条件。'},
+  {id:'zz-06', name:'湖南有色金属职业技术学院', city:'株洲', nature:'公办', level:'高职专科', tags:['冶金材料'], hot:['有色金属智能冶金技术','材料工程技术','机电一体化技术'],
+   intro:'面向有色金属行业的特色高职院校，冶金与材料方向行业对口度高。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'冶金岗位多在工业园区，适合能接受现场环境的考生。'},
+  {id:'xt-01', name:'湖南软件职业技术大学', city:'湘潭', nature:'民办', level:'职业本科', tags:['职业本科','软件'], hot:['软件工程技术','大数据工程技术','数字媒体技术'],
+   intro:'本科层次职业大学，软件与信息技术方向专业群完整，学费高于公办。',
+   exam:'文化素质测试 + 职业适应性测试，本科专业分数要求更高。',
+   tip:'若目标是本科学历又不想走高考，这是省内少数可选路径，但要做好费用规划。'},
+  {id:'xt-02', name:'湖南电气职业技术学院', city:'湘潭', nature:'公办', level:'高职专科', tags:['电气','装备'], hot:['电气自动化技术','风力发电工程技术','机电一体化技术'],
+   intro:'以电气与新能源装备为特色的高职院校，实训以电气控制为主。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'电气方向对物理基础有要求，电路基础题别放弃。'},
+  {id:'xt-03', name:'湖南城建职业技术学院', city:'湘潭', nature:'公办', level:'高职专科', tags:['建筑','土木'], hot:['建筑工程技术','工程造价','建筑装饰工程技术'],
+   intro:'建筑类高职院校，造价与施工方向在省内认可度较高。',
+   exam:'文化素质测试 + 职业适应性测试。',
+   tip:'造价方向适合细心、会算数的同学，Excel 与识图能力是加分项。'},
+  {id:'xt-04', name:'湘潭医卫职业技术学院', city:'湘潭', nature:'公办', level:'高职专科', tags:['医卫'], hot:['护理','康复治疗技术','药学'],
+   intro:'医护类高职院校，护理与康复专业实训条件完备。',
+   exam:'文化素质测试 + 职业技能测试，医护类有体检与色觉要求。',
+   tip:'护理单招竞争激烈，实操与沟通表达都要练。'},
+  {id:'xt-05', name:'湖南国防工业职业技术学院', city:'湘潭', nature:'公办', level:'高职专科', tags:['军工','装备制造'], hot:['数控技术','机电一体化技术','应用电子技术'],
+   intro:'具有军工背景的高职院校，装备制造类专业与军工企业对接。',
+   exam:'文化素质测试 + 职业适应性测试，部分专业有体检要求。',
+   tip:'军工类单位对政治审查与身体条件有要求，提前了解清楚。'},
+  {id:'hy-01', name:'湖南高速铁路职业技术学院', city:'衡阳', nature:'公办', level:'高职专科', tags:['高铁','轨道交通'], hot:['高速铁路客运服务','铁道工程技术','铁道信号自动控制'],
+   intro:'高铁人才培养的老牌院校，前身与铁路工程学校渊源深厚，行业订单班多。',
+   exam:'文化素质测试 + 面试/职业适应性测试；乘务类有身高、视力等条件。',
+   tip:'这是省内高铁乘务最热门的学校之一，分数与外形条件都要提前评估。'},
+  {id:'hy-02', name:'湖南环境生物职业技术学院', city:'衡阳', nature:'公办', level:'高职专科', tags:['农林','医卫'], hot:['园林技术','护理','畜牧兽医','生物制药技术'],
+   intro:'农林与医护并重的高职院校，园林与畜牧方向特色明显。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'畜牧兽医就业面意外地宽（宠物医疗），喜欢动物的同学可以重点看。'},
+  {id:'cd-01', name:'湖南幼儿师范高等专科学校', city:'常德', nature:'公办', level:'高职专科', tags:['师范','学前教育'], hot:['学前教育','早期教育','小学教育'],
+   intro:'湖南幼儿师范类专科学校，学前教育专业培养体系成熟，考编氛围浓。',
+   exam:'文化素质测试 + 面试（弹唱、舞蹈、简笔画、讲故事）。',
+   tip:'才艺是硬门槛，从现在开始每周固定练 3 次，别临时抱佛脚。'},
+  {id:'cd-02', name:'常德职业技术学院', city:'常德', nature:'公办', level:'高职专科', tags:['医卫','综合'], hot:['护理','临床医学','机电一体化技术'],
+   intro:'湘西北综合型公办高职，医护与机电是主要板块。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'地市级院校竞争相对缓和，适合作为“稳”或“保”的选择。'},
+  {id:'zj-01', name:'张家界航空工业职业技术学院', city:'张家界', nature:'公办', level:'高职专科', tags:['航空','军工'], hot:['飞行器数字化制造技术','无人机应用技术','航空发动机制造技术'],
+   intro:'航空制造类高职院校，军工背景，无人机与航空制造方向特色突出。',
+   exam:'文化素质测试 + 职业适应性测试，部分专业有体检要求。',
+   tip:'无人机方向近年热度高，注意确认是否有实操加试。'},
+  {id:'xx-01', name:'湘西民族职业技术学院', city:'湘西', nature:'公办', level:'高职专科', tags:['民族','综合'], hot:['护理','畜牧兽医','民族传统技艺','旅游管理'],
+   intro:'湘西地区综合性高职院校，承担地方技能人才培养与民族技艺传承。',
+   exam:'文化素质测试 + 职业适应性测试。',
+   tip:'地理位置偏远但录取相对友好，适合分数不高又想读公办的同学。'},
+  {id:'cz-01', name:'郴州职业技术学院', city:'郴州', nature:'公办', level:'高职专科', tags:['综合'], hot:['机电一体化技术','护理','旅游管理'],
+   intro:'湘南地区综合型公办高职，专业覆盖面较广。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'地方院校的实习资源多与本地产业绑定，报考前看看当地主导产业。'},
+  {id:'yz-01', name:'永州职业技术学院', city:'永州', nature:'公办', level:'高职专科', tags:['医卫','综合'], hot:['护理','临床医学','现代农业技术'],
+   intro:'湘南地区办学规模较大的公办高职，医护类专业是主力。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'医护类同样有体检限制，色弱色盲要提前确认。'},
+  {id:'hh-01', name:'怀化职业技术学院', city:'怀化', nature:'公办', level:'高职专科', tags:['农林','综合'], hot:['畜牧兽医','护理','机电一体化技术'],
+   intro:'湘西南综合型高职院校，农林与医护方向为主。',
+   exam:'文化素质测试 + 职业适应性测试。',
+   tip:'农林类实操性题目会考基础常识，别只刷文化课。'},
+  {id:'ld-01', name:'娄底职业技术学院', city:'娄底', nature:'公办', level:'高职专科', tags:['综合'], hot:['护理','机电一体化技术','建筑工程技术'],
+   intro:'湘中地区公办高职，专业设置贴合地方产业。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'铁路、钢铁相关企业在当地集中，机电方向实习机会较多。'},
+  {id:'sy-01', name:'邵阳职业技术学院', city:'邵阳', nature:'公办', level:'高职专科', tags:['综合'], hot:['护理','机电一体化技术','汽车检测与维修技术'],
+   intro:'湘中偏西南的综合型公办高职，医护与制造类专业为主。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'可作为保底志愿，注意不同年份专业计划数波动较大。'},
+  {id:'xt-06', name:'湖南理工职业技术学院', city:'湘潭', nature:'公办', level:'高职专科', tags:['新能源','制造'], hot:['光伏工程技术','机电一体化技术','工业机器人技术'],
+   intro:'以新能源与智能制造为方向的高职院校，光伏专业特色鲜明。',
+   exam:'文化素质测试 + 职业适应性测试。',
+   tip:'光伏、储能行业近年扩张快，是就业面较宽的方向。'},
+  {id:'xt-07', name:'湖南吉利汽车职业技术学院', city:'湘潭', nature:'民办', level:'高职专科', tags:['汽车','企业办学'], hot:['汽车制造与试验技术','新能源汽车技术','智能焊接技术'],
+   intro:'吉利集团举办的高职院校，汽车制造方向与企业产线对接紧密。',
+   exam:'文化素质测试 + 职业适应性测试。',
+   tip:'民办 + 企业办学，实习即上岗，适合想早点进产业的同学。'},
+  {id:'cs-23', name:'湖南工程职业技术学院', city:'长沙', nature:'公办', level:'高职专科', tags:['国土资源','建筑'], hot:['工程测量技术','建筑工程技术','宝玉石鉴定与加工'],
+   intro:'具有国土资源行业背景的高职院校，测绘与宝玉石方向特色独特。',
+   exam:'文化素质测试 + 职业技能测试。',
+   tip:'工程测量要能接受野外作业；宝玉石方向小众但辨识度高。'},
+  {id:'cs-24', name:'湖南科技职业学院', city:'长沙', nature:'公办', level:'高职专科', tags:['信息技术','艺术设计'], hot:['软件技术','陶瓷设计与工艺','视觉传达设计'],
+   intro:'信息与艺术设计并重的高职院校，专业设置偏应用型。',
+   exam:'文化素质测试 + 职业技能测试，艺术类有加试。',
+   tip:'艺术设计方向记得准备作品集，哪怕是手机里的小图。'}
+];
+
+const QUESTIONS = [
+  /* ---------- 语文 ---------- */
+  {id:'yw1', sub:'语文', q:'“床前明月光”的下一句是：', opts:['疑是地上霜','低头思故乡','举头望明月','天涯共此时'], a:0, exp:'出自李白《静夜思》：“床前明月光，疑是地上霜。举头望明月，低头思故乡。”注意顺序，别把第三句当第二句。'},
+  {id:'yw2', sub:'语文', q:'《故乡》《孔乙己》的作者是：', opts:['老舍','鲁迅','茅盾','巴金'], a:1, exp:'两篇均出自鲁迅的小说集《呐喊》。老舍代表作《骆驼祥子》，茅盾《子夜》，巴金《家》。'},
+  {id:'yw3', sub:'语文', q:'“落霞与孤鹜齐飞，秋水共长天一色”出自：', opts:['《岳阳楼记》','《赤壁赋》','《滕王阁序》','《醉翁亭记》'], a:2, exp:'出自王勃《滕王阁序》。这是单招语文默写与文学常识的高频考点。'},
+  {id:'yw4', sub:'语文', q:'成语“不刊之论”的意思是：', opts:['不值得发表的意见','不可改动或不可磨灭的言论','没有刊登出来的文章','批评别人的言论'], a:1, exp:'“刊”是削除、修改的意思，“不刊”即不可更改。属于易被字面误解的成语。'},
+  {id:'yw5', sub:'语文', q:'“三人行，必有我师焉”出自：', opts:['《孟子》','《论语》','《庄子》','《荀子》'], a:1, exp:'出自《论语·述而》，是孔子的话，常与“择其善者而从之”连考。'},
+  {id:'yw6', sub:'语文', q:'“莘莘学子”中“莘”的正确读音是：', opts:['xīn','shēn','xīng','shēng'], a:1, exp:'“莘莘”读 shēn shēn，形容众多。单招语文常考这类成语读音。'},
+  {id:'yw7', sub:'语文', q:'下列句子没有语病的一项是：', opts:['通过这次实习，使我掌握了焊接技术。','我们要努力提高自己的职业技能。','能否学好技能，是成为一名好工人的关键。','他大约用了将近三个月才完成。'], a:1, exp:'A 项“通过……使……”缺主语；C 项两面对一面；D 项“大约”“将近”语义重复。'},
+  {id:'yw8', sub:'语文', q:'“红的像火，粉的像霞，白的像雪”主要运用的修辞手法是：', opts:['夸张和拟人','比喻和排比','对比和反问','借代和反复'], a:1, exp:'出自朱自清《春》，三个结构相同的分句构成排比，每个分句都用“像”作比喻。'},
+  {id:'yw9', sub:'语文', q:'写请假条时，一般不需要出现的内容是：', opts:['请假事由','请假起止时间','抒情性的景物描写','请假人与日期'], a:2, exp:'请假条属应用文，要求简明、要素齐全：称呼、事由、时间、请假人、日期。'},
+  {id:'yw10', sub:'语文', q:'“春蚕到死丝方尽，蜡炬成灰泪始干”的作者是：', opts:['李商隐','杜牧','白居易','王维'], a:0, exp:'出自李商隐《无题》。晚唐诗人，与杜牧并称“小李杜”。'},
+  {id:'yw11', sub:'语文', q:'下列不属于说明文常用说明顺序的是：', opts:['时间顺序','空间顺序','逻辑顺序','倒叙顺序'], a:3, exp:'倒叙是记叙文的叙述方式，不是说明顺序。说明顺序常见三类：时间、空间、逻辑。'},
+  {id:'yw12', sub:'语文', q:'下列成语使用恰当的一项是：', opts:['他做事一丝不苟，深得同事信任。','他夸夸其谈地介绍了自己的经验。','这道题的解法真是差强人意，完全错了。','他孜孜不倦地偷懒了一整天。'], a:0, exp:'“夸夸其谈”含贬义不能用于褒扬；“差强人意”指大体令人满意；“孜孜不倦”与“偷懒”矛盾。'},
+
+  /* ---------- 数学 ---------- */
+  {id:'sx1', sub:'数学', q:'已知集合 A={1,2,3}，B={2,3,4}，则 A∩B =', opts:['{1,2,3,4}','{2,3}','{1,4}','{1}'], a:1, exp:'交集取公共元素，A、B 共有的元素是 2 和 3。并集才是 {1,2,3,4}。'},
+  {id:'sx2', sub:'数学', q:'设 f(x)=2x+1，则 f(3) =', opts:['5','6','7','8'], a:2, exp:'f(3)=2×3+1=7。代入计算题是单招数学送分题，别算错。'},
+  {id:'sx3', sub:'数学', q:'sin30° 的值是：', opts:['√3/2','1/2','√2/2','1'], a:1, exp:'特殊角：sin30°=1/2，sin45°=√2/2，sin60°=√3/2，sin90°=1。'},
+  {id:'sx4', sub:'数学', q:'等差数列 {aₙ} 中，a₁=2，公差 d=3，则 a₅ =', opts:['11','14','17','20'], a:1, exp:'aₙ=a₁+(n−1)d，所以 a₅=2+4×3=14。易错点是用了 5d 而不是 4d。'},
+  {id:'sx5', sub:'数学', q:'log₂8 的值是：', opts:['2','3','4','8'], a:1, exp:'因为 2³=8，所以 log₂8=3。对数本质是“求指数”。'},
+  {id:'sx6', sub:'数学', q:'圆 x²+y²=9 的半径是：', opts:['3','6','9','√3'], a:0, exp:'标准式 x²+y²=r²，r²=9，r=3。'},
+  {id:'sx7', sub:'数学', q:'复数 i² 的值是：', opts:['1','−1','i','−i'], a:1, exp:'i 是虚数单位，定义 i²=−1。这是复数题的基础。'},
+  {id:'sx8', sub:'数学', q:'从 5 名同学中选 2 人排成一队，共有多少种排法？', opts:['10','20','25','40'], a:1, exp:'有顺序用排列 A(5,2)=5×4=20。若只是选出 2 人不排序，则是组合 C(5,2)=10。'},
+  {id:'sx9', sub:'数学', q:'掷一枚均匀骰子，出现偶数点的概率是：', opts:['1/6','1/3','1/2','2/3'], a:2, exp:'偶数点为 2、4、6，共 3 种，概率 3/6=1/2。'},
+  {id:'sx10', sub:'数学', q:'直线 y=2x+1 的斜率是：', opts:['1','2','−2','1/2'], a:1, exp:'斜截式 y=kx+b 中 k 即斜率，本题 k=2，且在 y 轴截距为 1。'},
+  {id:'sx11', sub:'数学', q:'已知向量 a=(1,2)，b=(3,−1)，则 a·b =', opts:['1','5','−1','7'], a:0, exp:'数量积=对应坐标相乘再相加：1×3+2×(−1)=1。'},
+  {id:'sx12', sub:'数学', q:'函数 f(x)=x²−2x+3 的最小值是：', opts:['1','2','3','4'], a:1, exp:'配方得 (x−1)²+2，当 x=1 时取最小值 2。或用顶点公式，注意开口向上有最小值。'},
+  {id:'sx13', sub:'数学', q:'等比数列 2, 6, 18, … 的公比是：', opts:['2','3','4','6'], a:1, exp:'公比 q=后项÷前项=6÷2=3，下一项为 54。'},
+  {id:'sx14', sub:'数学', q:'全集 U={1,2,3,4,5}，A={1,3,5}，则 A 在 U 中的补集是：', opts:['{1,3,5}','{2,4}','{1,2}','∅'], a:1, exp:'补集=全集里去掉 A 的元素，剩下 {2,4}。'},
+  {id:'sx15', sub:'数学', q:'|−3| + 2⁰ =', opts:['2','3','4','5'], a:2, exp:'|−3|=3，任何非零数的 0 次方等于 1，所以 3+1=4。'},
+
+  /* ---------- 英语 ---------- */
+  {id:'en1', sub:'英语', q:'He ______ to school by bike every day.', opts:['go','goes','going','gone'], a:1, exp:'主语 He 是第三人称单数，一般现在时动词加 -s：goes。every day 提示一般现在时。'},
+  {id:'en2', sub:'英语', q:'I have lived in Changsha ______ 2018.', opts:['for','since','in','at'], a:1, exp:'since + 时间点（2018），for + 时间段（for six years）。现在完成时常考搭配。'},
+  {id:'en3', sub:'英语', q:'She is good ______ playing basketball.', opts:['in','on','at','for'], a:2, exp:'固定搭配 be good at doing sth.（擅长做某事）。'},
+  {id:'en4', sub:'英语', q:'This is ______ pen. (I)', opts:['I','me','my','mine'], a:2, exp:'名词 pen 前要用形容词性物主代词 my。“mine” 后面不能直接跟名词。'},
+  {id:'en5', sub:'英语', q:'Yesterday we ______ to Yuelu Mountain.', opts:['go','goes','went','will go'], a:2, exp:'Yesterday 表示过去，用一般过去时 went（go 的不规则过去式）。'},
+  {id:'en6', sub:'英语', q:'You ______ smoke here. It is a hospital.', opts:['must','mustn’t','needn’t','may'], a:1, exp:'医院禁止吸烟，用 mustn’t（禁止）。must 表示“必须”，语义相反。'},
+  {id:'en7', sub:'英语', q:'This box is ______ than that one.', opts:['heavy','heavier','heaviest','more heavy'], a:1, exp:'than 提示比较级。heavy 变比较级：辅音字母+y 结尾，变 y 为 i 加 er → heavier。'},
+  {id:'en8', sub:'英语', q:'— Thank you very much. — ______.', opts:['You’re welcome','Never mind','That’s right','No thanks'], a:0, exp:'回答感谢用 You’re welcome / That’s OK / My pleasure。Never mind 用于回应道歉。'},
+  {id:'en9', sub:'英语', q:'There ______ some books on the desk.', opts:['is','are','be','has'], a:1, exp:'There be 句型就近原则：books 是复数，用 are。'},
+  {id:'en10', sub:'英语', q:'If it ______ tomorrow, we will stay at home.', opts:['rain','rains','will rain','rained'], a:1, exp:'条件状语从句“主将从现”：主句用将来时，从句用一般现在时，it 后用 rains。'},
+  {id:'en11', sub:'英语', q:'May I ______ your bike? I will return it this evening.', opts:['lend','borrow','keep','bring'], a:1, exp:'borrow 是“借入”（向别人借），lend 是“借出”（借给别人）。这句话是向对方借车，用 borrow。'},
+  {id:'en12', sub:'英语', q:'Tom gets up at 6:30. He has breakfast at 7:00 and then goes to school. What time does Tom have breakfast?', opts:['6:30','7:00','7:30','8:00'], a:1, exp:'原文 “He has breakfast at 7:00” 直接给出答案。阅读题先看问题关键词，再回原文定位。'},
+
+  /* ---------- 职业适应性测试 ---------- */
+  {id:'zc1', sub:'职测', q:'小组合作中，同组成员因失误导致进度延误，最合适的做法是：', opts:['当众指出他的错误，划清责任','先一起把进度补上，事后私下沟通复盘','向老师申请换组','以后不再和他合作'], a:1, exp:'职业适应性测试考的是“先解决问题，再处理关系”。先补进度体现责任意识，私下复盘体现沟通能力。'},
+  {id:'zc2', sub:'职测', q:'发现宿舍楼起火，下列做法正确的是：', opts:['乘电梯快速下楼','用湿毛巾捂住口鼻，低姿沿疏散指示走楼梯','躲进卫生间等救援','先回房间收拾贵重物品'], a:1, exp:'火灾时电梯可能断电停运，浓烟向上聚集，应低姿、捂口鼻、走安全楼梯，不贪财物。'},
+  {id:'zc3', sub:'职测', q:'做职业规划时，第一步通常是：', opts:['直接选定一个热门专业','认识自我并了解相关职业','先看哪所学校好考','照着同学的选择走'], a:1, exp:'职业规划的基本逻辑：认识自我（兴趣、能力、性格）→ 了解职业世界 → 目标匹配 → 行动计划。'},
+  {id:'zc4', sub:'职测', q:'面试当天遇到堵车，可能迟到，最恰当的处理是：', opts:['干脆不去了','第一时间电话联系说明情况并致歉，尽快赶到','到了之后再解释','让同学代为说明'], a:1, exp:'考官看重的往往不是意外本身，而是你的应对：及时沟通、承担责任、尽快到场。'},
+  {id:'zc5', sub:'职测', q:'“所有 A 都是 B，有些 B 是 C”，据此可以确定：', opts:['有些 A 是 C','所有 A 都是 C','不能确定 A 与 C 的关系','没有 A 是 C'], a:2, exp:'“有些 B 是 C”中的 B 未必包含 A，因此 A 与 C 的关系无法确定。这是典型的三段论陷阱。'},
+  {id:'zc6', sub:'职测', q:'数列 2, 4, 8, 16, ( ) 的下一项是：', opts:['18','24','32','36'], a:2, exp:'每项是前一项的 2 倍，16×2=32。也可看成 2 的幂次：2¹,2²,2³,2⁴,2⁵。'},
+  {id:'zc7', sub:'职测', q:'数列 1, 4, 9, 16, ( ) 的下一项是：', opts:['20','24','25','36'], a:2, exp:'分别是 1²,2²,3²,4²，下一项为 5²=25。平方数列是数字推理最常见的一类。'},
+  {id:'zc8', sub:'职测', q:'被困电梯内，正确的做法是：', opts:['用力扒开电梯门','按警铃或对讲呼救，等待专业人员救援','从电梯顶部爬出','不停跳跃引起注意'], a:1, exp:'电梯有安全保护装置，强行扒门或攀爬极易造成伤害，应使用警铃、对讲或电话呼救并耐心等待。'},
+  {id:'zc9', sub:'职测', q:'面试官问“你最大的缺点是什么”，比较合适的回答是：', opts:['我没有缺点','说自己马虎、爱迟到','说一个真实但可改进的不足，并说明改进办法','反问面试官的看法'], a:2, exp:'这道题考的是自我认知与成长意识：真实、不致命、有改进动作，三点齐了就是好答案。'},
+  {id:'zc10', sub:'职测', q:'一件商品原价 200 元，打八折后的价格是：', opts:['120 元','150 元','160 元','180 元'], a:2, exp:'八折即 80%，200×0.8=160 元。单招职测里常出现这类基础计算题。'},
+  {id:'zc11', sub:'职测', q:'室友的作息和你冲突，影响你休息，最好的处理方式是：', opts:['直接找辅导员投诉','当面吵闹一次让他记住','心平气和沟通，约定共同遵守的作息规则','忍到毕业'], a:2, exp:'先沟通、再约定规则，是职场上处理冲突的标准路径；直接升级到投诉容易激化关系。'},
+  {id:'zc12', sub:'职测', q:'湖南高职单招的考试通常包括哪两部分？', opts:['只考语文数学英语','文化素质测试 + 职业技能（适应性）测试','只考面试','只考专业课'], a:1, exp:'单招普遍采用“文化素质 + 职业技能”的结构，具体科目与形式由各校招生简章规定。'}
+];
+
+const SUBJECTS = ['全部','语文','数学','英语','职测'];
+const FAQS = [
+  {q:'单招和普通高考有什么区别？', a:'单招是高职院校单独组织的招生考试，文化课难度通常低于高考，更看重职业技能与适应性；被单招录取后一般不再参加当年普通高考录取。'},
+  {q:'可以报几所学校、几个专业？', a:'湖南单招的志愿设置与填报时间由省教育考试院每年公布，可填报的院校与专业数量、是否允许调剂都以当年文件为准，务必在填报前核对官方通知。'},
+  {q:'文化素质测试考什么？', a:'多数院校考语文、数学、英语（部分学校认可高中学业水平考试成绩或折算），题型以选择、判断、简单计算为主，难度接近学业水平考试。'},
+  {q:'职业技能测试是不是很难？', a:'它主要看职业潜质而不是专业技能：常见形式是面试、职业适应性笔试、基础实操。准备重点是表达条理、专业认知、基本常识与动手规范。'},
+  {q:'中职生和普高生是同一套题吗？', a:'不少学校会按考生类别（普高 / 中职）分别命题或采用不同计分方式，中职生通常可用所学专业成绩或技能证书折算，具体以简章为准。'},
+  {q:'现在（2026 年）应该先做什么？', a:'先把语数英基础打牢，同时确定 2～3 所目标院校并读完它们今年的单招简章，看清考试科目、专业要求与录取规则，再定复习重点。'}
+];
+
+/* =============================================================
+   状态与工具
+   ============================================================= */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('hndz27:' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('hndz27:' + k, JSON.stringify(v)); } catch (e) {} }
+};
+
+const todayKey = () => new Date().toISOString().slice(0, 10);
+const Q = id => QUESTIONS.find(q => q.id === id);
+const letter = i => 'ABCD'[i];
+
+const S = {
+  view: 'overview',
+  subject: '全部',
+  city: '全部',
+  nature: '全部',
+  kw: '',
+  fav: store.get('fav', []),
+  wrong: store.get('wrong', []),
+  done: store.get('done', {}),
+  stats: store.get('stats', { answered: 0, correct: 0 }),
+  tasks: store.get('tasks', {}),
+  session: null
+};
+const save = { fav: () => store.set('fav', S.fav), wrong: () => store.set('wrong', S.wrong), done: () => store.set('done', S.done), stats: () => store.set('stats', S.stats), tasks: () => store.set('tasks', S.tasks) };
+
+/* =============================================================
+   视图切换
+   ============================================================= */
+function go(view) {
+  S.view = view;
+  $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + view));
+  $$('#tabs .tab').forEach(t => t.classList.toggle('active', t.dataset.view === view));
+  if (view === 'schools') renderSchools();
+  if (view === 'wrong') renderWrong();
+  if (view === 'overview') renderOverview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-go]');
+  if (t) go(t.dataset.go);
+  const tab = e.target.closest('#tabs .tab');
+  if (tab) go(tab.dataset.view);
+});
+
+/* =============================================================
+   概览
+   ============================================================= */
+const TASK_TPL = [
+  { t: '语文 / 数学 / 英语刷 20 题', s: '文化素质是基本盘，每天固定量，别断掉' },
+  { t: '职业适应性测试 5 题', s: '培养答题的“职业视角”，面试也用得上' },
+  { t: '精读 1 所目标院校简章', s: '重点看：专业计划、考试科目、体检要求' },
+  { t: '英语记 10 个新词', s: '会读会写会用，比一次背 50 个更有效' }
+];
+
+function renderOverview() {
+  const total = QUESTIONS.length;
+  const doneN = Object.keys(S.done).length;
+  const pct = total ? Math.round(doneN / total * 100) : 0;
+  $('#ring').style.setProperty('--p', pct);
+  $('#ringPct').textContent = pct + '%';
+  $('#sideTotal').textContent = total;
+  $('#sideAnswered').textContent = doneN;
+  $('#stTotal').innerHTML = total + '<small>题</small>';
+  $('#stDone').innerHTML = doneN + '<small>题</small>';
+  $('#stRate').textContent = S.stats.answered ? Math.round(S.stats.correct / S.stats.answered * 100) + '%' : '—';
+  $('#stFav').innerHTML = S.fav.length + '<small>所</small>';
+
+  // 今日任务
+  const key = todayKey();
+  if (!S.tasks[key]) { S.tasks[key] = [false, false, false, false]; save.tasks(); }
+  const list = S.tasks[key];
+  $('#taskList').innerHTML = TASK_TPL.map((x, i) => `
+    <div class="task ${list[i] ? 'done' : ''}" data-task="${i}">
+      <div class="box">✓</div>
+      <div class="task-main"><b>${x.t}</b><span>${x.s}</span></div>
+    </div>`).join('');
+  $('#todayTip').textContent = list.filter(Boolean).length + ' / 4 完成';
+  $$('#taskList .task').forEach(el => el.addEventListener('click', () => {
+    const i = +el.dataset.task;
+    S.tasks[todayKey()][i] = !S.tasks[todayKey()][i];
+    save.tasks();
+    renderOverview();
+  }));
+
+  // 推荐院校
+  const picks = [SCHOOLS[0], SCHOOLS[1], SCHOOLS.find(s => s.tags.includes('双高计划') && s.city === '长沙') || SCHOOLS[4], SCHOOLS.find(s => s.city === '衡阳') || SCHOOLS[8]];
+  const uniq = [];
+  picks.forEach(p => { if (p && !uniq.some(u => u.id === p.id)) uniq.push(p); });
+  $('#miniSchools').innerHTML = uniq.slice(0, 4).map(s => `
+    <button class="mini-school" data-open="${s.id}">
+      <div class="mini-logo">${s.name.slice(2, 3)}</div>
+      <div style="min-width:0">
+        <b>${s.name}</b>
+        <span>${s.city} · ${s.nature} · ${s.tags[0]}</span>
+      </div>
+    </button>`).join('');
+  $$('#miniSchools .mini-school').forEach(b => b.addEventListener('click', () => openSchool(b.dataset.open)));
+}
+
+/* =============================================================
+   院校库
+   ============================================================= */
+const CITIES = ['全部', ...Array.from(new Set(SCHOOLS.map(s => s.city)))];
+const NATURES = ['全部', '公办', '民办', '职业本科'];
+
+function chipHTML(list, cur, attr) {
+  return list.map(x => `<button class="chip ${x === cur ? 'on' : ''}" data-${attr}="${x}">${x}</button>`).join('');
+}
+
+function renderSchools() {
+  $('#cityChips').innerHTML = chipHTML(CITIES, S.city, 'city');
+  $('#natureChips').innerHTML = chipHTML(NATURES, S.nature, 'nature');
+  $$('#cityChips .chip').forEach(c => c.onclick = () => { S.city = c.dataset.city; renderSchools(); });
+  $$('#natureChips .chip').forEach(c => c.onclick = () => { S.nature = c.dataset.nature; renderSchools(); });
+
+  const kw = S.kw.trim();
+  const list = SCHOOLS.filter(s => {
+    if (S.city !== '全部' && s.city !== S.city) return false;
+    if (S.nature !== '全部' && s.nature !== S.nature) return false;
+    if (kw && !(s.name + s.hot.join('') + s.tags.join('')).includes(kw)) return false;
+    return true;
+  });
+  $('#scCount').textContent = list.length + ' 所院校';
+  $('#schoolGrid').innerHTML = list.length ? list.map(s => `
+    <article class="card scard">
+      <div class="stitle">
+        <h3>${s.name}</h3>
+        <button class="fav ${S.fav.includes(s.id) ? 'on' : ''}" data-fav="${s.id}" title="收藏">${S.fav.includes(s.id) ? '★' : '☆'}</button>
+      </div>
+      <div class="pills">
+        <span class="pill ${s.nature === '公办' ? 'jade' : 'red'}">${s.nature}</span>
+        <span class="pill">${s.city}</span>
+        <span class="pill">${s.level}</span>
+        ${s.tags.slice(0, 2).map(t => `<span class="pill gold">${t}</span>`).join('')}
+      </div>
+      <p>${s.intro}</p>
+      <div class="sfoot">
+        <span>优势专业：${s.hot[0]}</span>
+        <button class="btn sm" data-open="${s.id}">查看详情</button>
+      </div>
+    </article>`).join('') : `<div class="card empty">没有匹配的院校，换个关键词或筛选条件试试</div>`;
+
+  $$('#schoolGrid [data-fav]').forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    const id = b.dataset.fav;
+    const i = S.fav.indexOf(id);
+    if (i > -1) S.fav.splice(i, 1); else S.fav.push(id);
+    save.fav(); renderSchools();
+  });
+  $$('#schoolGrid [data-open]').forEach(b => b.onclick = () => openSchool(b.dataset.open));
+}
+
+function openSchool(id) {
+  const s = SCHOOLS.find(x => x.id === id);
+  if (!s) return;
+  const fav = S.fav.includes(s.id);
+  $('#modalBox').innerHTML = `
+    <div class="modal-h">
+      <button class="close" id="mClose">✕</button>
+      <h3>${s.name}</h3>
+      <div class="pills" style="margin-top:9px">
+        <span class="pill ${s.nature === '公办' ? 'jade' : 'red'}">${s.nature}</span>
+        <span class="pill">${s.city}</span>
+        <span class="pill">${s.level}</span>
+        ${s.tags.map(t => `<span class="pill gold">${t}</span>`).join('')}
+      </div>
+    </div>
+    <div class="mbody">
+      <h5>学校简介</h5>
+      <p>${s.intro}</p>
+      <h5>优势 / 特色专业</h5>
+      <ul>${s.hot.map(h => `<li>${h}</li>`).join('')}</ul>
+      <h5>单招参考</h5>
+      <div class="kv">
+        <b>考试形式</b><div>${s.exam}</div>
+        <b>报考提示</b><div>${s.tip}</div>
+      </div>
+      <h5>备考建议</h5>
+      <p>先按「${s.hot[0]}」方向确定技能测试的准备重点，再对照学校往年简章确认是否有面试、体检或加试。招生计划每年都会调整，最终以学校官方网站发布的当年招生简章为准。</p>
+      <button class="btn primary" data-fav-modal="${s.id}">${fav ? '★ 已收藏' : '☆ 收藏这所院校'}</button>
+    </div>`;
+  $('#modal').classList.add('on');
+  $('#mClose').onclick = closeModal;
+  const fb = $('[data-fav-modal]');
+  fb.onclick = () => {
+    const i = S.fav.indexOf(s.id);
+    if (i > -1) S.fav.splice(i, 1); else S.fav.push(s.id);
+    save.fav(); openSchool(s.id); renderSchools();
+  };
+}
+function closeModal() { $('#modal').classList.remove('on'); }
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* =============================================================
+   刷题
+   ============================================================= */
+function renderSubjectChips() {
+  $('#subjectChips').innerHTML = SUBJECTS.map(x => {
+    const n = x === '全部' ? QUESTIONS.length : QUESTIONS.filter(q => q.sub === x).length;
+    return `<button class="chip ${x === S.subject ? 'on' : ''}" data-sub="${x}">${x} <span style="opacity:.6">${n}</span></button>`;
+  }).join('');
+  $$('#subjectChips .chip').forEach(c => c.onclick = () => { S.subject = c.dataset.sub; renderSubjectChips(); renderDrillArea(); });
+}
+
+function pool() { return S.subject === '全部' ? QUESTIONS.slice() : QUESTIONS.filter(q => q.sub === S.subject); }
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function startSession(kind) {
+  let ids;
+  if (kind === 'mock') ids = shuffle(pool().map(q => q.id)).slice(0, 10);
+  else if (kind === 'wrong') ids = S.wrong.filter(id => { const q = Q(id); return q && (S.subject === '全部' || q.sub === S.subject); });
+  else ids = pool().map(q => q.id);
+  if (!ids.length) { S.session = null; renderDrillArea(); return; }
+  S.session = { kind, ids, idx: 0, picks: new Array(ids.length).fill(null) };
+  renderDrillArea();
+}
+
+function renderDrillArea() {
+  const el = $('#drillArea');
+  if (!S.session) {
+    const p = pool();
+    el.innerHTML = `
+      <div class="card panel" style="text-align:center;padding:44px 24px">
+        <div style="font-size:34px;margin-bottom:6px">📝</div>
+        <h3 style="font-size:17px">${S.subject === '全部' ? '全部科目' : S.subject} · 共 ${p.length} 题</h3>
+        <p style="color:var(--ink3);font-size:13.5px;margin-top:6px">点上方「顺序练习」按题库顺序刷；「随机 10 题模拟」抽一套小卷。每题作答后立刻给解析。</p>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap">
+          <button class="btn primary" id="s1">开始练习</button>
+          <button class="btn" id="s2">随机 10 题</button>
+        </div>
+      </div>`;
+    $('#s1').onclick = () => startSession('practice');
+    $('#s2').onclick = () => startSession('mock');
+    return;
+  }
+
+  const { ids, idx } = S.session;
+  if (idx >= ids.length) return renderResult();
+  const q = Q(ids[idx]);
+  const pick = S.session.picks[idx];
+  const answered = pick != null;
+  const pct = Math.round(idx / ids.length * 100);
+  const wrongMark = S.wrong.includes(q.id);
+
+  el.innerHTML = `
+    <div class="card qcard">
+      <div class="qmeta">
+        <span class="pill red">${q.sub}</span>
+        <span>第 ${idx + 1} / ${ids.length} 题</span>
+        <span>·</span>
+        <span>${S.session.kind === 'mock' ? '随机模拟' : S.session.kind === 'wrong' ? '错题重做' : '顺序练习'}</span>
+        ${answered ? `<span style="margin-left:auto;color:${pick.ok ? 'var(--jade)' : 'var(--red)'};font-weight:600">${pick.ok ? '答对' : '答错'}</span>` : `<span style="margin-left:auto">${wrongMark ? '错题本中' : ''}</span>`}
+      </div>
+      <div class="prog"><i style="width:${pct}%"></i></div>
+      <div class="qtext" style="margin-top:18px">${q.q}</div>
+      <div class="opts" id="opts">
+        ${q.opts.map((o, i) => {
+          let cls = '';
+          if (answered) {
+            if (i === q.a) cls = 'right';
+            else if (i === pick.pick) cls = 'wrong';
+          }
+          return `<button class="opt ${cls}" data-opt="${i}" ${answered ? 'disabled' : ''}>
+            <span class="key">${letter(i)}</span><span>${o}</span>
+          </button>`;
+        }).join('')}
+      </div>
+      ${answered ? `<div class="exp"><b>解析 · ${pick.ok ? '答对了' : '注意这个坑'}</b>${q.exp}</div>` : ''}
+      <div class="qfoot">
+        <button class="btn sm" id="qFav">${wrongMark ? '★ 在错题本' : '☆ 收进错题本'}</button>
+        <div style="display:flex;gap:8px;margin-left:auto">
+          ${answered ? `<button class="btn primary" id="qNext">${idx + 1 === ids.length ? '看成绩' : '下一题 →'}</button>` : `<span style="font-size:12px;color:var(--ink3)">选一个答案就能看到解析</span>`}
+        </div>
+      </div>
+    </div>`;
+
+  $$('#opts .opt').forEach(b => b.onclick = () => answer(+b.dataset.opt));
+  const nextBtn = $('#qNext');
+  if (nextBtn) nextBtn.onclick = () => { S.session.idx++; renderDrillArea(); };
+  $('#qFav').onclick = () => {
+    const i = S.wrong.indexOf(q.id);
+    if (i > -1) S.wrong.splice(i, 1); else S.wrong.push(q.id);
+    save.wrong(); updateBadge(); renderDrillArea();
+  };
+}
+
+function answer(i) {
+  const ss = S.session;
+  if (!ss || ss.picks[ss.idx] != null) return;
+  const q = Q(ss.ids[ss.idx]);
+  const ok = i === q.a;
+  ss.picks[ss.idx] = { pick: i, ok };
+  S.stats.answered++; if (ok) S.stats.correct++;
+  if (!S.done[q.id]) S.done[q.id] = { ok, at: Date.now() };
+  if (!ok) { if (!S.wrong.includes(q.id)) S.wrong.push(q.id); }
+  else if (ss.kind === 'wrong') { const k = S.wrong.indexOf(q.id); if (k > -1) S.wrong.splice(k, 1); }
+  save.stats(); save.done ? save.done() : null; save.wrong();
+  updateBadge();
+  renderDrillArea();
+}
+
+function renderResult() {
+  const ss = S.session;
+  const right = ss.picks.filter(p => p && p.ok).length;
+  const rate = Math.round(right / ss.ids.length * 100);
+  const word = rate >= 90 ? '稳，这个速度可以加量了' : rate >= 70 ? '不错，把错题再过一遍' : rate >= 50 ? '基础还行，错的题要回归知识点' : '先别急，错的题逐个看解析'; 
+  $('#drillArea').innerHTML = `
+    <div class="card result">
+      <div class="big" style="color:${rate >= 70 ? 'var(--jade)' : 'var(--red)'}">${rate}<small>%</small></div>
+      <h3 style="margin-top:8px">本轮得分 ${right} / ${ss.ids.length}</h3>
+      <p>${word}</p>
+      <div class="row">
+        <button class="btn primary" id="rAgain">再来一轮</button>
+        <button class="btn" id="rWrong">看错题本</button>
+        <button class="btn" id="rBack">回到设置</button>
+      </div>
+    </div>`;
+  $('#rAgain').onclick = () => startSession(ss.kind === 'wrong' ? 'wrong' : 'mock');
+  $('#rWrong').onclick = () => { S.session = null; go('wrong'); };
+  $('#rBack').onclick = () => { S.session = null; renderDrillArea(); };
+  renderOverview();
+}
+
+/* =============================================================
+   错题本
+   ============================================================= */
+function renderWrong() {
+  const list = S.wrong.map(Q).filter(Boolean);
+  $('#wrongCount').textContent = '共 ' + list.length + ' 题';
+  $('#wrongList').innerHTML = list.length ? list.map(q => `
+    <div class="card wq">
+      <div class="qmeta"><span class="pill red">${q.sub}</span></div>
+      <div class="qtext">${q.q}</div>
+      <div class="rt">正确答案：<b>${letter(q.a)}. ${q.opts[q.a]}</b></div>
+      <div class="rt">${q.exp}</div>
+      <div><button class="btn sm" data-del="${q.id}">移出错题本</button></div>
+    </div>`).join('') : `<div class="card empty">还没有错题。去刷几题吧，错了会自动收进来。</div>`;
+  $$('#wrongList [data-del]').forEach(b => b.onclick = () => {
+    const i = S.wrong.indexOf(b.dataset.del);
+    if (i > -1) S.wrong.splice(i, 1);
+    save.wrong(); updateBadge(); renderWrong();
+  });
+}
+
+function updateBadge() {
+  $('#wrongBadge').textContent = S.wrong.length;
+  $('#wrongBadge').style.display = S.wrong.length ? '' : 'none';
+}
+
+/* =============================================================
+   倒计时 / FAQ / 主题
+   ============================================================= */
+const EXAM_DATE = new Date('2027-03-20T09:00:00+08:00');
+function tick() {
+  let diff = EXAM_DATE - new Date();
+  if (diff < 0) diff = 0;
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff % 86400000 / 3600000);
+  const m = Math.floor(diff % 3600000 / 60000);
+  const sec = Math.floor(diff % 60000 / 1000);
+  const pad = n => String(n).padStart(2, '0');
+  $('#cdD').textContent = d; $('#cdH').textContent = pad(h);
+  $('#cdM').textContent = pad(m); $('#cdS').textContent = pad(sec);
+  $('#cdPill').innerHTML = `距考试 <b>${d}</b> 天`;
+}
+
+function renderFAQ() {
+  $('#faq').innerHTML = FAQS.map(f => `
+    <div class="acc"><h4>${f.q}<i>+</i></h4><p>${f.a}</p></div>`).join('');
+  $$('#faq .acc').forEach(a => a.onclick = () => a.classList.toggle('open'));
+  $$('#faq .acc')[0].classList.add('open');
+}
+
+const themeBtn = $('#themeBtn');
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  themeBtn.textContent = t === 'dark' ? '☀' : '◐';
+  store.set('theme', t);
+}
+themeBtn.onclick = () => applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+
+/* =============================================================
+   初始化
+   ============================================================= */
+applyTheme(store.get('theme', 'light'));
+$('#kw').addEventListener('input', e => { S.kw = e.target.value; renderSchools(); });
+$('#btnPractice').onclick = () => { go('drill'); startSession('practice'); };
+$('#btnMock').onclick = () => { go('drill'); startSession('mock'); };
+$('#btnWrongDrill').onclick = () => { go('drill'); startSession('wrong'); };
+$('#btnRedoWrong').onclick = () => { go('drill'); startSession('wrong'); };
+$('#btnClearWrong').onclick = () => { if (confirm('确定清空错题本吗？')) { S.wrong = []; save.wrong(); updateBadge(); renderWrong(); } };
+
+document.addEventListener('keydown', e => {
+  if (!S.session || S.view !== 'drill') return;
+  const k = e.key.toUpperCase();
+  const i = 'ABCD'.indexOf(k);
+  const n = +e.key;
+  const opts = $$('#opts .opt');
+  if (i > -1 && i < 4 && opts[i] && S.session.picks[S.session.idx] == null) { answer(i); return; }
+  if (n >= 1 && n <= 4 && opts[n - 1] && S.session.picks[S.session.idx] == null) { answer(n - 1); return; }
+  if ((e.key === 'Enter' || e.key === ' ') && S.session.picks[S.session.idx] != null) { e.preventDefault(); S.session.idx++; renderDrillArea(); }
+});
+
+renderOverview();
+renderSchools();
+renderSubjectChips();
+renderDrillArea();
+renderFAQ();
+updateBadge();
+tick();
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
