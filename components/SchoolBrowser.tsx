@@ -23,12 +23,16 @@ function SchoolCard({ school }: { school: School }) {
       <Pills>
         <Pill tone={school.nature === '公办' ? 'jade' : 'red'}>{school.nature}</Pill>
         <Pill>{school.city}</Pill>
-        <Pill>{school.level}</Pill>
-        {school.tags.slice(0, 2).map((tag) => (
-          <Pill key={tag} tone="gold">
-            {tag}
-          </Pill>
-        ))}
+        {school.easyAdmit ? (
+          <span title={`稳上岸理由：${school.easyAdmit}`} className="cursor-help">
+            <Pill tone="jade">稳上岸</Pill>
+          </span>
+        ) : null}
+        {typeof school.plan2026 === 'number' ? (
+          <Pill tone="gold">2026 单招计划 {school.plan2026.toLocaleString('zh-CN')} 人</Pill>
+        ) : (
+          <Pill tone="gold">2026 单招计划以考试院公布为准</Pill>
+        )}
       </Pills>
 
       <Link href={`/schools/${school.id}/`} className="block">
@@ -57,6 +61,10 @@ export function SchoolBrowser() {
 
   return (
     <div className="grid gap-6">
+      <Card className="flex flex-wrap items-center gap-x-2 gap-y-1 px-4 py-2.5 text-[12px] text-ink3">
+        <Pill tone="jade">稳上岸</Pill>
+        <span>指往年单招录取率较高、报考竞争较小、更容易拿到全日制专科学历的公办院校（鼠标悬停可看理由）。当兵看的是「学历 + 身体 + 政审」、专业不限，所以先稳上岸拿学历是第一优先级。</span>
+      </Card>
       {groups.map((group) => (
         <section key={group.key}>
           <div className="mb-2.5 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">

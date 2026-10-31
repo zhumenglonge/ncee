@@ -98,6 +98,7 @@ function RoundRow({
   school,
   takenId,
   picking,
+  tip,
   onToggle,
   onPick,
   onClear,
@@ -106,6 +107,7 @@ function RoundRow({
   school: School | undefined;
   takenId: string | null;
   picking: boolean;
+  tip?: string;
   onToggle: () => void;
   onPick: (id: string) => void;
   onClear: () => void;
@@ -173,6 +175,10 @@ function RoundRow({
       </div>
 
       {picking && <SchoolPicker takenId={takenId} onPick={onPick} onClose={onToggle} />}
+
+      {tip && (
+        <p className="mt-1.5 rounded-md bg-red-soft px-2 py-1 text-[11.5px] font-semibold text-red">{tip}</p>
+      )}
     </div>
   );
 }
@@ -198,6 +204,11 @@ export function VolunteerPlan() {
             school={plan[round.key] ? getSchool(plan[round.key]!) : undefined}
             takenId={plan[round.key === 'first' ? 'second' : 'first']}
             picking={picking === round.key}
+            tip={
+              round.key === 'second'
+                ? '二志愿考试需同时满足：① 一志愿未录取；② 该校一志愿未招满。长沙热门院校基本在一志愿就招满，填它做二志愿等于没填——保底优先选历年一志愿未招满的院校。'
+                : undefined
+            }
             onToggle={() => setPicking((cur) => (cur === round.key ? null : round.key))}
             onPick={(id) => {
               actions.setPlan(round.key, id);

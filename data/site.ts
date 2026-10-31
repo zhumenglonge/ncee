@@ -148,5 +148,6 @@ export const NAV = [
   { href: '/schools/', label: '院校库' },
   { href: '/drill/', label: '刷题' },
   { href: '/wrong/', label: '错题本' },
+  { href: '/textbooks/', label: '教材' },
   { href: '/guide/', label: '备考指南' },
 ] as const;
