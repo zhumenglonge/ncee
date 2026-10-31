@@ -47,6 +47,7 @@ export default async function SchoolDetailPage({ params }: Params) {
           <Pill tone={school.nature === '公办' ? 'jade' : 'red'}>{school.nature}</Pill>
           <Pill>{school.city}</Pill>
           <Pill>{school.level}</Pill>
+          {school.easyAdmit ? <Pill tone="jade">稳上岸</Pill> : null}
           {school.tags.map((tag) => (
             <Pill key={tag} tone="gold">
               {tag}
@@ -59,6 +60,58 @@ export default async function SchoolDetailPage({ params }: Params) {
         <Section title="学校简介">
           <p>{school.intro}</p>
         </Section>
+
+        {school.easyAdmit ? (
+          <Section title="稳上岸理由">
+            <p>{school.easyAdmit}</p>
+            <p className="mt-1.5 text-[12.8px] text-ink3">
+              提示：当兵入伍看的是「全日制专科学历 + 身体 + 政审」，专业不限，所以先稳上岸拿到学历最关键；录取后学历学信网可查，在校或毕业时可通过「全国征兵网」以大学生身份应征，具体优待政策以户籍地征兵办当年公告为准。
+            </p>
+          </Section>
+        ) : null}
+
+        {school.ds2026 ? (
+          <Section title="2026 单招实录（官网公示）">
+            <Pills className="mb-2">
+              {typeof school.ds2026.firstAdmitted === 'number' ? (
+                <Pill tone="jade">一志愿拟录取 {school.ds2026.firstAdmitted.toLocaleString('zh-CN')} 人</Pill>
+              ) : null}
+              {typeof school.ds2026.secondAdmitted === 'number' ? (
+                <Pill tone="gold">二志愿拟录取 {school.ds2026.secondAdmitted} 人</Pill>
+              ) : null}
+              {school.ds2026.announced ? <Pill>公示于 {school.ds2026.announced}</Pill> : null}
+            </Pills>
+            {school.ds2026.note ? <p className="mb-2">{school.ds2026.note}</p> : null}
+            {school.ds2026.scoreLines?.length ? (
+              <>
+                <table className="w-full border-collapse text-[13px]">
+                  <thead>
+                    <tr className="text-left text-ink3">
+                      <th className="border-b border-line py-1.5 pr-3 font-semibold">专业（二志愿拟录取最低分）</th>
+                      <th className="border-b border-line py-1.5 pr-3 font-semibold">A 类（普高）</th>
+                      <th className="border-b border-line py-1.5 font-semibold">B 类（中职）</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {school.ds2026.scoreLines.map((line) => (
+                      <tr key={line.major}>
+                        <td className="border-b border-line/60 py-1.5 pr-3">{line.major}</td>
+                        <td className="border-b border-line/60 py-1.5 pr-3 tabular-nums">{line.aMin ?? '—'}</td>
+                        <td className="border-b border-line/60 py-1.5 tabular-nums">{line.bMin ?? '—'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {school.ds2026.scoreNote ? (
+                  <p className="mt-1.5 text-[12.8px] text-ink3">{school.ds2026.scoreNote}</p>
+                ) : null}
+              </>
+            ) : null}
+            {school.ds2026.source ? (
+              <p className="mt-1.5 text-[12.8px] text-ink3">数据来源：{school.ds2026.source}；2027 年政策与分数以当年官方公告为准。</p>
+            ) : null}
+          </Section>
+        ) : null}
 
         <Section title="优势 / 特色专业">
           <ul className="list-disc pl-[18px]">
